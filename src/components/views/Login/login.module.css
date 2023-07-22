@@ -1,0 +1,82 @@
+.container {
+  max-width: 400px;
+  width: 100%;
+  background-color: #f4c434;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
+  position: relative;
+}
+
+.content form .user-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+  font-size: medium;
+}
+
+.user-details .input-box {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.user-details .input-box span.details {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.user-details .input-box input {
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.user-details .input-box input:hover {
+  border-color: #515755;
+}
+
+.button {
+  height: 45px;
+  margin: 35px 0;
+}
+
+.button input {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #acadad, #515755);
+}
+
+.button input:hover {
+  background: linear-gradient(-135deg, #acadad, #515755);
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}

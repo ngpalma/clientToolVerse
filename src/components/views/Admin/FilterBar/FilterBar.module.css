@@ -1,0 +1,11 @@
+.filterBarContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 40px 10px;
+    width: 200px;
+    background-color: azure;
+    box-shadow: black 0px 3px 8px; 
+    
+};

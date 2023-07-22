@@ -1,0 +1,65 @@
+.emptyTrolley {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emptyTrolleyImg {
+    height: 25rem;
+}
+
+.goShopping {
+    background-color: var(--primary);
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 1rem;
+    height: 4rem;
+    width: 15rem;
+    border: 0.1rem solid var(--secondary);
+}
+
+.goShopping:hover {
+    border: 0.2rem solid var(--buttons);
+}
+
+.calculate {
+    margin-top: 2rem;
+}
+
+.total {
+    font-size: medium;
+    margin-top: 2rem;
+    color: var(--warnings);
+}
+
+.toPagos {
+    font-size: medium;
+    margin-top: 2rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid var(--highlights);
+    padding: .5rem;
+}
+
+.button {
+    height: 45px;
+    margin: 35px 0;
+}
+
+.button input {
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #acadad, #515755);
+}
+
+.button input:hover {
+    background: linear-gradient(-135deg, #acadad, #515755);
+}
