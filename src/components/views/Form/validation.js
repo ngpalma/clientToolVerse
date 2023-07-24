@@ -16,9 +16,10 @@ export function validateForm(firstName, lastName, email, phone, password, confir
     error = "Ingresa una dirección de correo electrónico válida.";
   } else if (!phoneRegex.test(phone)) {
     error = "Ingresa un número de teléfono válido (10 dígitos sin espacios ni caracteres especiales).";
-  } else if (password !== confirmPassword) {
-    error = "Las contraseñas no coinciden. Por favor, asegúrate de que las contraseñas sean iguales.";
-  }
+  } 
+  // else if (password !== confirmPassword) {
+  //   error = "Las contraseñas no coinciden. Por favor, asegúrate de que las contraseñas sean iguales.";
+  // }
 
   return error;
 }
