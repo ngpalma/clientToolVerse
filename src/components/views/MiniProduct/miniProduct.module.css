@@ -29,10 +29,31 @@
 }
 
 .bin {
-    height: 2.5rem;
+    height: 2rem;
     margin: -0.5rem;
     margin-bottom: -0.6rem;
     cursor: pointer;
+}
+
+.mas,
+.menos {
+    height: 2rem;
+    margin: -0.5rem;
+    margin-bottom: -0.6rem;
+    cursor: pointer;
+    border: none;
+}
+
+.lessQtity,
+.addQtity {
+    height: 3rem;
+    width: 3rem;
+    border: none;
+    background-color: transparent;
+}
+
+.quantMiniProd {
+    font-size: small;
 }
 
 .deleteProd {
@@ -44,4 +65,9 @@
 
 .deleteProd:hover {
     border: 0.2rem solid var(--warnings);
+}
+
+.warning {
+    font-weight: 700;
+    color: var(--warnings);
 }

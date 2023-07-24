@@ -1,12 +1,15 @@
 import style from "./Ordering.module.css";
 import {
+  getTools,
   orderByName,
   orderByPrice,
   setCurrentPage,
 } from "../../redux/actions";
+
 import { useDispatch } from "react-redux";
 
 const Ordering = () => {
+
   const dispatch = useDispatch();
 
   return (
@@ -22,7 +25,7 @@ const Ordering = () => {
               dispatch(setCurrentPage(1));
             }}
           >
-            {[" de A-Z", "de Z-A"].map((e, i) => (
+            {["de A-Z", "de Z-A"].map((e, i) => (
               <option value={e} key={i}>
                 {e}
               </option>

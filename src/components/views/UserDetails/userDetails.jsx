@@ -4,19 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import React from "react";
 import CartForm from '../CartForm/cartForm';
 
+
 export default function UserDetails() {
     // obtiene la información si el usuario ha iniciado sesión
     // si el usuario no ha iniciado sesión, permite que lo haga
     // si el usuario es nuevo permite que coloque sus datos y pueda crear un usuario nuevo
 
-    const actualUser = useSelector(state => state.actualUser)
+    //actualUser
+
+
+    const actualUser = useSelector(state => state.login)
     const navigate = useNavigate()
 
     return (
         <div className={style.overallUser}>
             <div className={style.questions}>
                 {
-                    (!actualUser.hasOwnProperty('firstName')) ? <div className={style.noUser}>
+                    (!actualUser.hasOwnProperty('email')) ? <div className={style.noUser}>
                         <div className={style.msgLogIn}>
                             <div className={style.mje}>
                                 Parece que no has iniciado sesión.
@@ -25,7 +29,7 @@ export default function UserDetails() {
                         </div>
                         <div className={style.msgRegister}>
                             <div className={style.mje}>
-                                Si te registras, tus datos serán guardados para que la próxima ocasión todo sea más ágil
+                                No estás registrado aún?
                             </div>
                             <button className={style.register} onClick={() => navigate('/form')}> Registro </button>
                         </div>

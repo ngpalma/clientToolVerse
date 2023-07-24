@@ -47,7 +47,7 @@
   }
   
   .price {
-    background-color: var(--highlights);
+    background-color: var(--primary);
     color: var(--warnings);
   }
   

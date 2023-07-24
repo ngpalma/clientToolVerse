@@ -23,7 +23,7 @@ const Error404 = () => {
 
       <div className={style.messageTwo}>
           <p>
-            The page you are looking for might have been removed had its name changed or is temporarily unavailable. 
+            ⚠️ The page you are looking for might have been removed had its name changed or is temporarily unavailable. 
             <br/>
           </p>
       </div>

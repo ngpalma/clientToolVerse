@@ -14,6 +14,7 @@ const Card = ({ id, image, name, model, brand, feature, price, stock }) => {
     }
     dispatch(actions.addToCart(product))
   }
+
   return (
     <div className={style.upperDiv} key={id}>
       <div className={style.name} onClick={() => navigate(`/detail/${id}`)}>{name}</div>

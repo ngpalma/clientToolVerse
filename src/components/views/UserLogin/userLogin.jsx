@@ -3,25 +3,19 @@ import { CSSTransition } from "react-transition-group";
 import styles from "./userLogin.module.css";
 import userIcon from "./userLogin.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { cerrarSesion } from "../../../redux/actions";
 
 export default function UserLogin() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
   const [isUserMenuVisible, setUserMenuVisibility] = useState(false);
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    setLoggedIn(false);
-    // lógica para cerrar sesión
-  };
-
-  const handleLogin = () => {
-    // lógica para iniciar sesión o redireccionar a la página de inicio de sesión
-    if (isLoggedIn) {
-      handleLogout();
-    } else {
-      navigate("/login"); // redirige al usuario a la página de inicio de sesión
-    }
+  const handleMenuItemClick = (destination) => {
+    setUserMenuVisibility(false);
+    navigate(destination);
   };
 
   const showUserMenu = () => {
@@ -30,6 +24,11 @@ export default function UserLogin() {
 
   const hideUserMenu = () => {
     setUserMenuVisibility(false);
+  };
+
+  const handleLogout = () => {
+    dispatch(cerrarSesion());
+    navigate("/login");
   };
 
   return (
@@ -46,12 +45,13 @@ export default function UserLogin() {
         unmountOnExit
       >
         <div className={styles.UserMenu} ref={userMenuRef}>
-          {isLoggedIn ? (
-            <button onClick={handleLogout}>Cerrar sesión</button>
+          {isAuthenticated ? ( 
+            <button onClick={handleLogout}>Cerrar Sesión</button>
           ) : (
+           
             <>
-              <button onClick={handleLogin}>Cliente</button>
-              <button onClick={() => navigate("/home")}>Administrador</button>
+              <button onClick={() => handleMenuItemClick("/login")}>Cliente</button>
+              <button onClick={() => handleMenuItemClick("/home")}>Administrador</button>
             </>
           )}
         </div>

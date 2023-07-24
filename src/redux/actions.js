@@ -8,15 +8,23 @@ import {
   GET_USER,
   ADD_TO_CART,
   REMOVE_FROM_CART,
+  LESS_FROM_CART,
   ORDER_BY_NAME,
   ORDER_BY_PRICE,
   SET_CURRRENT_PAGE,
   CLEAN_BDD,
   CHANGE_FILTER_CATEGORY,
   CHANGE_FILTER_BRAND,
+  LOGIN,
+  CERRAR_SESION,
+  VERIFY_LOGIN_SUCCESS,
+  ERROR_LOGIN,
+  ISAUTHENTICATED,
   REGISTER_STOCK_ENTRY_SUCCESS,
   REGISTER_STOCK_ENTRY_FAILURE,
   REGISTER_STOCK_EXIT_SUCCESS,
+  UPDATE_TOOL_STOCK,
+  ACTUAL_USER
 } from "./type";
 
 export const getToolsByName = (tool) => {
@@ -74,6 +82,60 @@ export const createUser = (character) => {
   };
 };
 
+const isAuthenticated = () => {
+  return {
+    type: ISAUTHENTICATED
+  }
+}
+
+export const login = (character) => {
+  return async function (dispatch) {
+    try {
+      const { data } = await axios.post(`http://localhost:3001/login`, character, { withCredentials: true });
+      if (data) {
+        dispatch({ type: LOGIN, payload: data });
+        dispatch(isAuthenticated())
+      }
+    } catch (error) {
+      dispatch(errorLogin(error?.response?.data?.message))
+      console.log(error?.response?.data?.message);
+    }
+  };
+}
+
+export const errorLogin = (error) => {
+  return {
+    type: ERROR_LOGIN,
+    payload: error
+  }
+};
+
+export const actualUser = (info) => {
+  return {
+    type: ACTUAL_USER,
+    payload: info
+  }
+}
+
+export const verifyLoginSuccess = () => {
+  return {
+    type: VERIFY_LOGIN_SUCCESS
+  }
+}
+
+export const cerrarSesion = (tokenCookie) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post('http://localhost:3001/logout', tokenCookie, { withCredentials: true })
+      if (data) {
+        return dispatch({ type: CERRAR_SESION });
+      }
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+};
+
 export const getUser = (name) => {
   return async function (dispatch) {
     try {
@@ -105,6 +167,18 @@ export const removeFromCart = (itemId) => {
     console.log(error);
   }
 };
+
+export const lessFromCart = (itemId) => {
+  try {
+    return {
+      type: LESS_FROM_CART,
+      payload: itemId,
+    };
+  } catch (error) {
+    console.log(error)
+  }
+
+}
 
 export const orderByName = (name) => {
   try {
@@ -161,6 +235,16 @@ export const changeFilterBrand = (brand) => {
     type: CHANGE_FILTER_BRAND,
     payload: brand
   }
+};
+//Accion que me actualiza el Stock global
+export const updateProductStock = (productId, newStock) => {
+  return {
+    type: UPDATE_TOOL_STOCK,
+    payload: {
+      productId,
+      newStock,
+    },
+  };
 };
 // Acción para registrar una entrada de stock
 export const registerStockEntry = (toolId, quantity) => async (dispatch) => {

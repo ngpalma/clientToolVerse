@@ -3,7 +3,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 1em;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 .button {
   display: inline-block;
