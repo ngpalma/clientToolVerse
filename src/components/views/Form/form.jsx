@@ -125,7 +125,7 @@ function Form() {
                 onChange={handleChange}
               />
             </div> */}
-            {/* <div className={styles["input-box"]}>
+            <div className={styles["input-box"]}>
               <span className={styles.details}>Rol</span>
               <select
                 name="role"
@@ -135,7 +135,7 @@ function Form() {
                 <option value="admin">Admin</option>
                 <option value="client">Cliente</option>
               </select>
-            </div> */}
+            </div>
           </div>
 
           <div className={styles.button}>
