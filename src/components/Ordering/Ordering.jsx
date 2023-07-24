@@ -1,6 +1,5 @@
 import style from "./Ordering.module.css";
 import {
-  getTools,
   orderByName,
   orderByPrice,
   setCurrentPage,

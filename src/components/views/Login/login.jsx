@@ -5,7 +5,7 @@ import { login } from "../../../redux/actions";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -29,7 +29,7 @@ function Login() {
   };
   useEffect(() => {
     isAuthenticated && navigate('/userprofile')
-  }, [isAuthenticated])
+  }, [isAuthenticated, navigate])
 
   console.log(isAuthenticated)
 
