@@ -14,7 +14,7 @@ export default function Protected() {
           const tokenCookie = Cookie.get('token'); // Obtén el valor de la cookie 'token'
           console.log(tokenCookie)
               try {
-                  const { data } = await axios.get('http://localhost:3001/verify', {
+                  const { data } = await axios.get('/verify', {
                     withCredentials: true,
                     headers: {
                       Authorization: `Bearer ${tokenCookie}`
