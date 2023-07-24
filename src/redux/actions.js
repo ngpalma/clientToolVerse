@@ -91,7 +91,7 @@ const isAuthenticated = () => {
 export const login = (character) => {
   return async function (dispatch) {
     try {
-      const { data } = await axios.post(`http://localhost:3001/login`, character, { withCredentials: true });
+      const { data } = await axios.post(`/login`, character, { withCredentials: true });
       if (data) {
         dispatch({ type: LOGIN, payload: data });
         dispatch(isAuthenticated())
@@ -126,7 +126,7 @@ export const verifyLoginSuccess = () => {
 export const cerrarSesion = (tokenCookie) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('http://localhost:3001/logout', tokenCookie, { withCredentials: true })
+      const { data } = await axios.post('/logout', tokenCookie, { withCredentials: true })
       if (data) {
         return dispatch({ type: CERRAR_SESION });
       }
