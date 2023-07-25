@@ -72,7 +72,7 @@ export const getToolById = (id) => {
 export const createUser = (character) => {
   return async function (dispatch) {
     try {
-      const { data } = await axios.post(`/register`, character, { withCredentials: true });
+      const { data } = await axios.post(`/register`, character);
       if (data) {
         dispatch({ type: CREATE_USER, payload: data });
       }
@@ -91,7 +91,7 @@ const isAuthenticated = () => {
 export const login = (character) => {
   return async function (dispatch) {
     try {
-      const { data } = await axios.post(`/login`, character, { withCredentials: true });
+      const { data } = await axios.post(`/login`, character);
       if (data) {
         dispatch({ type: LOGIN, payload: data });
         dispatch(isAuthenticated())
