@@ -13,7 +13,7 @@ function Form() {
     email: "",
     phone: "",
     password: "",
-    // confirmPassword: "",
+    confirmPassword: "",
     role: "client",
   });
 
@@ -32,7 +32,7 @@ function Form() {
       formData.email,
       formData.phone,
       formData.password,
-      // formData.confirmPassword
+      formData.confirmPassword
     );
     setError(validationError);
 
@@ -46,7 +46,7 @@ function Form() {
             email: "",
             phone: "",
             password: "",
-            // confirmPassword: "",
+            confirmPassword: "",
             role: "client",
           });
           setError("");
@@ -115,7 +115,7 @@ function Form() {
                 onChange={handleChange}
               />
             </div>
-            {/* <div className={styles["input-box"]}>
+            <div className={styles["input-box"]}>
               <span className={styles.details}>Confirmar Contraseña</span>
               <input
                 type="password"
@@ -124,7 +124,7 @@ function Form() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
-            </div> */}
+            </div>
             <div className={styles["input-box"]}>
               <span className={styles.details}>Rol</span>
               <select
