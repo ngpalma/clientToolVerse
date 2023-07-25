@@ -10,8 +10,8 @@ function Login() {
     email: "",
     password: "",
   });
-  const { errorLogin } = useSelector(state => state.errorLogin)
-  const { isAuthenticated } = useSelector(state => state.isAuthenticated)
+  const errorLogin = useSelector(state => state.errorLogin)
+  const isAuthenticated = useSelector(state => state.isAuthenticated)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
