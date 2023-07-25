@@ -9,7 +9,8 @@ export function Logout() {
   const navigate = useNavigate();
   const tokenCookie = Cookie.get("token");
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault()
     dispatch(cerrarSesion(tokenCookie));
     navigate("/home");
   };

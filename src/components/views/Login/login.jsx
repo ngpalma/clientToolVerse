@@ -29,8 +29,7 @@ function Login() {
   };
   useEffect(() => {
     isAuthenticated && navigate('/userprofile')
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
+  }, [isAuthenticated, navigate])
 
   console.log(isAuthenticated)
 
