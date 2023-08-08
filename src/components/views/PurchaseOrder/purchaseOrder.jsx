@@ -47,7 +47,7 @@ export default function PurchaseOrder() {
     }, [total]);
 
     const handleMP = () => {
-        axios.post('http://localhost:3001/payment', trolley.map((e) => e)).then((res) => window.location.href = res.data.response.body.init_point);
+        axios.post('/payment', trolley.map((e) => e)).then((res) => window.location.href = res.data.response.body.init_point);
         setPagos(false)
     }
 

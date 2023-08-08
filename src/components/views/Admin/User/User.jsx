@@ -66,7 +66,6 @@ const User = () => {
           return updatedEditData;
         });
       }
-      console.log(`PUT request http://localhost:3001/user/${id}`);
       return new Swal({
         title: "Success",
         text: "Edicion exitosa",

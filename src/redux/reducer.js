@@ -34,7 +34,6 @@ import {
   UPDATE_USER_ERROR,
   CREATE_CART_BDD,
   ADD_TO_CART_SUCCESS,
-  SELECT_ADDRESS
 } from "./type";
 
 const initialState = {

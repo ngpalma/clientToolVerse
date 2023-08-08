@@ -47,7 +47,7 @@ export default function PurchaseCartDisplay() {
 
     const handleMP = () => {
         setLoading(true);
-        axios.post('http://localhost:3001/payment', trolley.map((e) => e)).then((res) => window.location.href = res.data.response.body.init_point);
+        axios.post('/payment', trolley.map((e) => e)).then((res) => window.location.href = res.data.response.body.init_point);
     }
 
     return (
