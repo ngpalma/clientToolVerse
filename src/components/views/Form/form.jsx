@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import styles from "../Form/form.module.css";
 import { useDispatch } from "react-redux";
 import { createUser } from "../../../redux/actions";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import { validateForm } from "./validation";
 
 function Form() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -17,7 +20,7 @@ function Form() {
     role: "client",
   });
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState({});
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -26,7 +29,7 @@ function Form() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const validationError = validateForm(
+    const validationErrors = validateForm(
       formData.firstName,
       formData.lastName,
       formData.email,
@@ -34,9 +37,9 @@ function Form() {
       formData.password,
       formData.confirmPassword
     );
-    setError(validationError);
+    setError(validationErrors);
 
-    if (!validationError) {
+    if (Object.keys(validationErrors).length === 0) {
       dispatch(createUser(formData))
         .then(() => {
           console.log("Registro exitoso");
@@ -49,15 +52,26 @@ function Form() {
             confirmPassword: "",
             role: "client",
           });
-          setError("");
-          alert("¡Registro exitoso!");
+          setError({});
+
+          Swal.fire({
+            title: "Registro exitoso",
+            text: "¡Tu registro ha sido exitoso!",
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then(() => {
+          
+            navigate("/login");
+          });
         })
         .catch(() => {
           console.log("Error en el registro");
-          setError("Error en el registro. Inténtalo nuevamente.");
+          setError({ general: "Error en el registro. Inténtalo nuevamente." });
         });
     }
   };
+
+  const showRoleSelect = formData.role !== "client";
 
   return (
     <div className={styles.container}>
@@ -74,6 +88,7 @@ function Form() {
                 value={formData.firstName}
                 onChange={handleChange}
               />
+              {error.firstName && <div className={styles.error}>{error.firstName}</div>}
             </div>
             <div className={styles["input-box"]}>
               <span className={styles.details}>Apellido</span>
@@ -84,6 +99,7 @@ function Form() {
                 value={formData.lastName}
                 onChange={handleChange}
               />
+              {error.lastName && <div className={styles.error}>{error.lastName}</div>}
             </div>
             <div className={styles["input-box"]}>
               <span className={styles.details}>Email</span>
@@ -94,6 +110,7 @@ function Form() {
                 value={formData.email}
                 onChange={handleChange}
               />
+              {error.email && <div className={styles.error}>{error.email}</div>}
             </div>
             <div className={styles["input-box"]}>
               <span className={styles.details}>Número de Teléfono</span>
@@ -104,6 +121,7 @@ function Form() {
                 value={formData.phone}
                 onChange={handleChange}
               />
+              {error.phone && <div className={styles.error}>{error.phone}</div>}
             </div>
             <div className={styles["input-box"]}>
               <span className={styles.details}>Contraseña</span>
@@ -114,6 +132,7 @@ function Form() {
                 value={formData.password}
                 onChange={handleChange}
               />
+              {error.password && <div className={styles.error}>{error.password}</div>}
             </div>
             <div className={styles["input-box"]}>
               <span className={styles.details}>Confirmar Contraseña</span>
@@ -124,18 +143,17 @@ function Form() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
+              {error.confirmPassword && <div className={styles.error}>{error.confirmPassword}</div>}
             </div>
-            <div className={styles["input-box"]}>
-              <span className={styles.details}>Rol</span>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-              >
-                <option value="admin">Admin</option>
-                <option value="client">Cliente</option>
-              </select>
-            </div>
+            {showRoleSelect && (
+              <div className={`${styles.hidden}`}>
+                <span className={`${styles.hidden}`}>Rol</span>
+                <select name="role" value={formData.role} onChange={handleChange}>
+                  <option value="client">Cliente</option>
+                  {/* Otras opciones de roles podrían agregarse aquí */}
+                </select>
+              </div>
+            )}
           </div>
 
           <div className={styles.button}>
@@ -143,7 +161,7 @@ function Form() {
           </div>
         </form>
 
-        {error && <div className={styles.error}>{error}</div>}
+        {error.general && <div className={styles.error}>{error.general}</div>}
       </div>
     </div>
   );

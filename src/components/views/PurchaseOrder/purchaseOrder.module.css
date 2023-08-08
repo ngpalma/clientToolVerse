@@ -32,7 +32,7 @@
 .userDetails,
 .prodDetails {
     padding: 2rem;
-    border: 1px solid var(--buttons);
+    border: 0.1rem solid var(--buttons);
     font-size: medium;
 }
 

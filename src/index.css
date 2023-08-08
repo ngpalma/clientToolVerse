@@ -5,6 +5,7 @@
   --highlights: #bababa;
   --warnings: #914621;
   --buttons: #000000;
+  --onhover: rgb(13, 73, 13);
 
   /* PORPUESTA: ayuda a utilizar el rem para una web más dinámica sin usar tanto media query */
   font-size: 62.5%;

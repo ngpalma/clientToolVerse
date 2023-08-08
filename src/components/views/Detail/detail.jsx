@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import style from "./Detail.module.css";
 import { addToCart, getToolById } from "../../../redux/actions";
 
+import ReviewPage from "../../Review/ReviewPage";
+
 const Detail = () => {
   const products = useSelector((state) => state.toolsDetail);
   const dispatch = useDispatch();
@@ -36,6 +38,11 @@ const Detail = () => {
         <br></br>
         <button className={style.addToCart} onClick={() => dispatch(addToCart(products))}><b>Añadir al carrito</b></button>
       </div>
+
+      <div>
+      <ReviewPage/>
+      </div>
+
     </div>
   );
 };

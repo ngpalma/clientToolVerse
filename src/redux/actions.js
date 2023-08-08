@@ -7,6 +7,8 @@ import {
   CREATE_USER,
   GET_USER,
   ADD_TO_CART,
+  ADD_TO_CART_SUCCESS,
+  ADD_TO_CART_FAILURE,
   REMOVE_FROM_CART,
   LESS_FROM_CART,
   ORDER_BY_NAME,
@@ -24,7 +26,30 @@ import {
   REGISTER_STOCK_ENTRY_FAILURE,
   REGISTER_STOCK_EXIT_SUCCESS,
   UPDATE_TOOL_STOCK,
-  ACTUAL_USER
+  ACTUAL_USER,
+  DELETE_TROLLEY,
+  GET_CATEGORY,
+  PURCHASE_ORDER_SUCCESS,
+  PURCHASE_ORDER_ERROR,
+  CREATE_SHIPPING_ADDRESS_SUCCESS,
+  CREATE_SHIPPING_ADDRESS_ERROR,
+  ADD_REVIEW,
+  UPDATE_REVIEW_COMMENTS,
+  DELETE_REVIEW,
+  SET_IS_AUTHENTICATED,
+  GET_SHIPPING_ADDRESS_SUCCESS,
+  GET_SHIPPING_ADDRESS_ERROR,
+  DELETE_SHIPPING_ADDRESS_SUCCESS,
+  DELETE_SHIPPING_ADDRESS_ERROR,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
+  UPDATE_SHIPPING_ADDRESS_SUCCESS,
+  UPDATE_SHIPPING_ADDRESS_ERROR,
+  SET_LAST_VISITED_ROUTE,
+  GET_USER_ID,
+  GET_USER_ID_ERROR,
+  CREATE_CART_BDD,
+  SELECT_ADDRESS
 } from "./type";
 
 export const getToolsByName = (tool) => {
@@ -72,7 +97,9 @@ export const getToolById = (id) => {
 export const createUser = (character) => {
   return async function (dispatch) {
     try {
-      const { data } = await axios.post(`/register`, character, { withCredentials: true });
+      const { data } = await axios.post(`/register`, character, {
+        withCredentials: true,
+      });
       if (data) {
         dispatch({ type: CREATE_USER, payload: data });
       }
@@ -84,55 +111,81 @@ export const createUser = (character) => {
 
 const isAuthenticated = () => {
   return {
-    type: ISAUTHENTICATED
-  }
-}
+    type: ISAUTHENTICATED,
+  };
+};
+
+export const setIsAuthenticated = (value) => {
+  return {
+    type: SET_IS_AUTHENTICATED,
+    payload: value,
+  };
+};
 
 export const login = (character) => {
   return async function (dispatch) {
     try {
-      const { data } = await axios.post(`/login`, character, { withCredentials: true });
+      const { data } = await axios.post(`/login`, character, {
+        withCredentials: true,
+      });
       if (data) {
+        const token = data.token;
+        console.log("action token:", data.token);
+
+        window.localStorage.setItem("token", token);
+        //window.localStorage.setItem("islogged", true);
+        console.log("Set token en action Login:", token);
+
         dispatch({ type: LOGIN, payload: data });
-        dispatch(isAuthenticated())
+        dispatch(isAuthenticated());
       }
     } catch (error) {
-      dispatch(errorLogin(error?.response?.data?.message))
+      dispatch(errorLogin(error?.response?.data?.message));
       console.log(error?.response?.data?.message);
     }
   };
-}
+};
 
 export const errorLogin = (error) => {
   return {
     type: ERROR_LOGIN,
-    payload: error
-  }
+    payload: error,
+  };
 };
 
 export const actualUser = (info) => {
   return {
     type: ACTUAL_USER,
-    payload: info
-  }
-}
+    payload: info,
+  };
+};
 
 export const verifyLoginSuccess = () => {
   return {
-    type: VERIFY_LOGIN_SUCCESS
-  }
-}
+    type: VERIFY_LOGIN_SUCCESS,
+  };
+};
 
 export const cerrarSesion = (tokenCookie) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('/logout', tokenCookie, { withCredentials: true })
+      const { data } = await axios.post("/logout", tokenCookie, {
+        withCredentials: true,
+      });
       if (data) {
+        window.localStorage.removeItem("token");
         return dispatch({ type: CERRAR_SESION });
       }
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error("Error al cerrar sesión:", error);
     }
+  };
+};
+
+export const setLastVisitedRoute = (route) => {
+  return {
+    type: SET_LAST_VISITED_ROUTE,
+    payload: route,
   };
 };
 
@@ -140,7 +193,6 @@ export const getUser = (name) => {
   return async function (dispatch) {
     try {
       let response = await axios.get(`/user/${name}`);
-      console.log("esta es la response en actions.getUser", response);
       if (response) {
         dispatch({ type: GET_USER, payload: response });
       }
@@ -175,10 +227,19 @@ export const lessFromCart = (itemId) => {
       payload: itemId,
     };
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
+};
 
-}
+export const deleteTrolley = () => {
+  try {
+    return {
+      type: DELETE_TROLLEY,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const orderByName = (name) => {
   try {
@@ -226,15 +287,15 @@ export const cleanBdd = () => {
 export const changeFilterCategory = (category) => {
   return {
     type: CHANGE_FILTER_CATEGORY,
-    payload: category
-  }
+    payload: category,
+  };
 };
 
 export const changeFilterBrand = (brand) => {
   return {
     type: CHANGE_FILTER_BRAND,
-    payload: brand
-  }
+    payload: brand,
+  };
 };
 //Accion que me actualiza el Stock global
 export const updateProductStock = (productId, newStock) => {
@@ -276,4 +337,270 @@ export const registerStockExit = (toolId, quantity) => async (dispatch) => {
       payload: error.response.data.error,
     });
   }
+};
+//Accion de traer las categorias
+export const getCategory = () => {
+  return async function (dispatch) {
+    try {
+      const category = await axios.get(`/category`);
+      if (category) {
+        dispatch({ type: GET_CATEGORY, payload: category.data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+// crea el carrito -> para luego enviar los detalles de los productos
+export const createCartBdd = (userId) => async (dispatch) => {
+  try {
+    const cartId = await axios.post("/purchaseCart", { userId: userId })
+
+    dispatch({
+      type: CREATE_CART_BDD,
+      payload: cartId.data.id,
+    });
+
+    return cartId.data.id;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addDetail = (purchaseCartId, products) => async (dispatch) => {
+  try {
+    let compra = []
+    products.forEach(async (product) => {
+      const cartDetail = await axios.post("/purchaseDetail", {
+        purchaseCartId: purchaseCartId,
+        productId: product.productId,
+        quantity: product.quantity
+      })
+      let detalle = cartDetail.data;
+      const prodDetails = await axios.get(`/products/${product.productId}`)
+      detalle.name = prodDetails.data.name;
+      detalle.price = prodDetails.data.price;
+
+      compra.push(detalle)
+    })
+
+    dispatch({
+      type: ADD_TO_CART_SUCCESS,
+      payload: compra,
+    });
+
+    return compra
+  } catch (error) {
+    dispatch({
+      type: ADD_TO_CART_FAILURE,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+// export const getCategory = () => {
+//   return async function (dispatch) {
+//     try {
+//       const category = await axios.get(`/category`);
+//       if (category) {
+//         dispatch({ type: GET_CATEGORY, payload: category.data });
+//       }
+//     } catch (error) {
+//       (error);
+//     }
+//   };
+// };
+
+export const getLastPuchasteCart = (userId) => {
+  return async function () {
+    try {
+      const user = await axios.get(`/user/${userId}`)
+      const carts = user.data.purchaseCarts
+
+      // Encontrar el objeto cart con el id más grande
+      const cartWithMaxId = carts.reduce((maxCart, currentCart) => {
+        if (currentCart.id > maxCart.id) {
+          return currentCart;
+        }
+        return maxCart;
+      }, { id: -1 }); // Inicializar con un valor que asegure que cualquier cart.id será mayor
+
+      const maxId = cartWithMaxId.id
+      return maxId
+    } catch (error) {
+      console.log('Error obteniendo el último carrito de compras')
+    }
+  }
+};
+
+export const getProductsInCart = (purchaseCartId) => async () => {
+  try {
+    let details = ''
+    if (purchaseCartId) details = await axios.get(`/purchaseDetail/purchaseCartId/${purchaseCartId}`)
+
+    return details.data
+
+  } catch (error) {
+    console.log('Error buscando los detalles del carrito', error)
+  }
+}
+
+
+// carga la orden de compra en la bdd
+export const addPurchaseOrder =
+  (userId, purchaseCartId, shippingAddressId, paymentMethodId, total) =>
+    async (dispatch) => {
+      try {
+        const response = await axios.post("/purchaseOrder", {
+          userId,
+          purchaseCartId,
+          shippingAddressId,
+          paymentMethodId,
+          total,
+        });
+
+        dispatch({
+          type: PURCHASE_ORDER_SUCCESS,
+          payload: response.data,
+        });
+      } catch (error) {
+        dispatch({
+          type: PURCHASE_ORDER_ERROR,
+          payload: error.response.data.error,
+        });
+      }
+    };
+
+//carga los datos de envio en la bdd
+export const createShippingAddress = (address) => async (dispatch) => {
+  try {
+    const response = await axios.post("/shippingAddress", address);
+
+    dispatch({
+      type: CREATE_SHIPPING_ADDRESS_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CREATE_SHIPPING_ADDRESS_ERROR,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+//traigo las direcciones de la base de datos por id de cliente
+export const getShippingAddressByUserId = (userId) => async (dispatch) => {
+  try {
+    const response = await axios.get(`/shippingAddress/user/${userId}`);
+    dispatch({
+      type: GET_SHIPPING_ADDRESS_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_SHIPPING_ADDRESS_ERROR,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+export const selectAddress = (address) => {
+  try {
+    return {
+      type: SELECT_ADDRESS,
+      payload: address
+    }
+  } catch (error) {
+    console.log('Error al elegir la shipping address', error)
+  }
+}
+
+//Actions Reviews
+export const addReview = (review) => ({
+  type: ADD_REVIEW,
+  payload: review,
+});
+
+export const updateReviewComments = (id, comments) => ({
+  type: UPDATE_REVIEW_COMMENTS,
+  payload: { id, comments },
+});
+
+export const deleteReview = (id) => ({
+  type: DELETE_REVIEW,
+  payload: id,
+});
+
+export const deleteShippingAddress = (id) => async (dispatch) => {
+  try {
+    const response = await axios.delete(`/shippingAddress/${id}`);
+    dispatch({
+      type: DELETE_SHIPPING_ADDRESS_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_SHIPPING_ADDRESS_ERROR,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+export const updateShippingAddress = (id, address) => async (dispatch) => {
+  try {
+    const response = await axios.put(`/shippingAddress/${id}`, address);
+    dispatch({
+      type: UPDATE_SHIPPING_ADDRESS_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_SHIPPING_ADDRESS_ERROR,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+export const getUserById = (id) => async (dispatch) => {
+  try {
+    const response = await axios.get(`/user/${id}`);
+    dispatch({
+      type: GET_USER_ID,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_USER_ID_ERROR,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+export const updateUser = (id, userData) => async (dispatch) => {
+  try {
+    const response = await axios.put(`/user/${id}`);
+    dispatch({
+      type: UPDATE_USER_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_USER_ERROR,
+      payload: error.response.data.error,
+    });
+  }
+};
+
+export const getAllUsers = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`/user`);
+      if (response) {
+        dispatch({ type: GET_USER, payload: response.data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 };

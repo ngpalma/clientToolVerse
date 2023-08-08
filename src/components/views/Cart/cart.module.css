@@ -29,3 +29,19 @@
     font-size: larger;
     margin-bottom: 2rem;
 }
+
+@media (max-width: 770px) {
+    .userDetails {
+        max-width: 97%;
+        display: flex;
+        gap: 2rem
+    }
+}
+
+@media (max-width: 418px) {
+    .userDetails {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem
+    }
+}

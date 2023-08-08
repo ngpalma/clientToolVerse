@@ -16,11 +16,11 @@ export default function Nav() {
             <div className={style.logOnCart}>
                 <div className={style.registerLogOn}>
                     <button className={style.register} onClick={() => navigate('/form')}> Registro </button>
-                    
+
                 </div>
                 <button className={style.cartBtn} onClick={() => navigate('/cart')}> <img src={logoCart} alt="logoCart" className={style.cartBtnImg} /> </button>
+                <UserLogin className={style.userLogin} />
             </div>
-            <UserLogin />
         </div>
     )
 }

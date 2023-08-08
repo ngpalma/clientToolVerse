@@ -1,47 +1,29 @@
 import style from "./cartDetails.module.css";
 import empty from "../img/emptyTrolley.gif";
+import vaciar from "../img/vaciar.png";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useNavigate } from "react-router-dom";
 import MiniProduct from "../MiniProduct/miniProduct";
 import { useDispatch } from "react-redux";
 import * as actions from "../../../redux/actions";
 import React, { useEffect, useState } from "react";
-
-
-
-//TODO: Implementar las siguientes funcionalidades para ocupar paypal:
-// Una vez que agregue el usuario sus productos se muestre el boton de Paypal en CartDetails solo cuando este logueado el usuario.
-// Vincular el monto total con el Sandbox.
-// Una vez hecha la compra crear la orden de compra POST
-//Mostrar alertas visuales en el navegador
+import loadingGear from "../img/Spin-1s-200px.gif"
 
 export default function CartDetails() {
   const trolley = useSelector((state) => state.itemCart);
+  // const cartError = useSelector((state) => state.cartError);
+  const userId = useSelector((state) => state.login.id)
+  const address = useSelector((state) => state.address)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState("");
-  // const [compra, setCompra] = useState("")
-
-  // Registrar Salida del Stock. -> NO BORRAR! SERÁ UTILIZADA MÁS ADELANTE EN LA CONFIRMACIÓN DE LA COMPRA
-  const exitStock = () => {
-    trolley.forEach((product) => {
-      const productId = product.id;
-      const quantity = product.quantity;
-      dispatch(actions.registerStockExit(productId, quantity)); // Registramos la salida del stock
-      const newStock = product.stock - quantity; // Calculamos el nuevo stock después de la compra
-      dispatch(actions.updateProductStock(productId, newStock)); // Actualizamos el stock en el estado global
-    });
-    navigate("/purchaseOrder")
-  };
 
   const calculateTotal = () => {
     let suma = 0;
     trolley.forEach((product) => {
       suma = suma + product.price * product.quantity;
     });
-    // En este código, usamos toFixed(2) para limitar "suma" a dos dígitos después de la coma decimal. Luego, utilizamos parseFloat() para convertir la cadena resultante nuevamente en un número de punto flotante con dos dígitos después de la coma.
-    // Con esta modificación, "suma" tendrá siempre dos dígitos después de la coma decimal al calcular el total en la función calculateTotal().
     suma = parseFloat(suma.toFixed(2));
     return setTotal(suma);
   };
@@ -49,10 +31,60 @@ export default function CartDetails() {
   useEffect(() => {
     try {
       calculateTotal();
+      if (!address) dispatch(actions.getShippingAddressByUserId(userId));
     } catch (error) {
       console.log("Error al calcular el total", error);
     }
   });
+
+  const continuePurchase = async () => {
+    try {
+      // si ya he clickeado no hace nada
+      if (loading) return;
+
+      if (!address)
+
+        // activa el loader
+        setLoading(true)
+
+      // Por un lado crea el carrito de compras -> necesito el userId! y obtengo el purchaseCartId
+      const purchaseCartId = await dispatch(actions.createCartBdd(userId));
+
+      // Por el otro carga los productos en el carrito
+      // crea un array de objetos con los productos
+      let productsTrolley = [];
+      trolley.forEach((product) => {
+        let productoABDD = {
+          productId: product.id,
+          quantity: product.quantity,
+        };
+        productsTrolley.push(productoABDD);
+      });
+
+      // enviar el array de productos y el purchaseCartId -> necesito saber que el carrito está listo para seguir adelante
+      const carritoListo = await dispatch(actions.addDetail(purchaseCartId, productsTrolley));
+
+      // Nos lleva a la página siguiente una vez que el carrito esté listo
+      if (carritoListo) {
+        // desactiva el loader
+        setLoading(false);
+
+        // nos lleva a la siguiente página
+        navigate("/purchaseCartDisplay");
+      }
+
+    } catch (error) {
+      console.log('Errores al crear el carrito y los detalles', error);
+    }
+  };
+
+  const deleteTrolley = () => {
+    let answer = window.confirm("Esto eliminará TODOS los productos en el carrito. Deseas continuar?")
+    if (answer) {
+      dispatch(actions.deleteTrolley());
+    }
+    else return
+  }
 
   return (
     <div className={style.overallDetail}>
@@ -88,23 +120,34 @@ export default function CartDetails() {
               />
             );
           })}
-        </div>
-      )}
-      <div>
-        <div className={style.summingTotal}>
-          <div className={style.total}> Monto total ${total} </div>
-          <div className={style.button}>
-            <input
-              type="submit"
-              value="Confirma tu compra"
-              // debería ser un navigate a la página de confirmación de la compra y allí podemos elegir los métodos de pago
-              onClick={() => exitStock()}
-            />
+          <div className={style.summingTotal}>
+            <button className={style.deleteAll}>
+              <img src={vaciar} alt="Vaciar el carrito"
+                onClick={() => deleteTrolley()} className={style.emptyTrolley} />
+            </button>
+            <div className={style.total}> Monto total ${total} </div>
+            {
+              address ? <div>
+                {
+                  loading ? <div> <img src={loadingGear} alt='Loading resources' /> </div>
+                    : <div className={style.button}>
+                      <input
+                        type="submit"
+                        value="Continúa con tu compra"
+                        onClick={() => continuePurchase()}
+                      />
+                    </div>
+                }
 
+              </div>
+
+                : <div> Para avanzar con tu compra, por favor completa tus datos </div>
+            }
           </div>
-
         </div>
-      </div>
+
+      )}
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, /*useEffect*/ } from "react";
 import { CSSTransition } from "react-transition-group";
 import styles from "./userLogin.module.css";
 import userIcon from "./userLogin.png";
@@ -28,30 +28,41 @@ export default function UserLogin() {
 
   const handleLogout = () => {
     dispatch(cerrarSesion());
-    navigate("/login");
   };
+
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate("/login");
+  //   }
+  // }, [isAuthenticated, navigate]);
+
+  console.log ('userLogin, se envio cierre de sesion, autenticacion es:',isAuthenticated)
 
   return (
     <div
       className={styles.userLogin}
       onMouseEnter={showUserMenu}
       onMouseLeave={hideUserMenu}
-    >
+    >      
       <img src={userIcon} alt="User Icon" className={styles.UserIcon} />
       <CSSTransition
         in={isUserMenuVisible}
         timeout={350}
         classNames="UserMenuAnimation"
         unmountOnExit
+        nodeRef={userMenuRef}
       >
         <div className={styles.UserMenu} ref={userMenuRef}>
           {isAuthenticated ? ( 
-            <button onClick={handleLogout}>Cerrar Sesión</button>
+            <>            
+              <button onClick={() => handleMenuItemClick("/login")}>Panel de Usuario</button>
+              <button onClick={handleLogout}>Cerrar Sesión</button>
+            </>
           ) : (
            
             <>
               <button onClick={() => handleMenuItemClick("/login")}>Cliente</button>
-              <button onClick={() => handleMenuItemClick("/home")}>Administrador</button>
+              <button onClick={() => handleMenuItemClick("/admin")}>Administrador</button>
             </>
           )}
         </div>

@@ -1,15 +1,24 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./EditProducts.module.css";
-import { getTools } from "../../../../redux/actions";
+import { getTools, setCurrentPage } from "../../../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import Pagination from "../../../Pagination/Pagination";
+import SearchBar from "../SearchBarAdmin/searchBar";
+import Filters from '../../../Filters/Filters';
+import swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content"
+
 
 const EditProducts = () => {
   const allProducts = useSelector((state) => state.toolsShown);
-  console.log(allProducts);
+  const currentPage = useSelector((state) => state.currentPage)
+  //console.log(allProducts);
   const dispatch = useDispatch();
+  const itemsPerPage = 12;
 
   const [editData, setEditData] = useState({});
+  // const mySwal = withReactContent(swal)
 
   useEffect(() => {
     try {
@@ -44,14 +53,25 @@ const EditProducts = () => {
       brand,
       price,
       detail
-    })
+    });
+    //La unica linea que puse para que los inputs se actualizen simultaneamente :)
+    await dispatch(getTools());
+
     setEditData((prevEditData) => {
       const updatedEditData = {...prevEditData};
       delete updatedEditData[id];
       return updatedEditData;
     })
     };
-    
+    console.log(`PUT request http://localhost:3001/products/${id}`);
+    return new swal({
+      title: "Success",
+      text: "Edicion exitosa",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 2000
+    })
+
     } catch (error) {
       console.log("Error updating", error);
     }
@@ -65,13 +85,25 @@ const EditProducts = () => {
     })
   };
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const toolsShown = allProducts.slice(startIndex, endIndex);
+
   return (
     <div>
       <h1 className={styles.title}>EDITAR PRODUCTOS</h1>
+      <SearchBar/>
+      <Filters/>
+      <div className={styles.button}>
+                    <input type="submit" value="Restablecer filtros" onClick={() => {
+                        dispatch(getTools());
+                        dispatch(setCurrentPage(1));
+                    }} />
+                </div>
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>SKU</th>
             <th>Producto</th>
             <th>Modelo</th>
             <th>Marca</th>
@@ -81,12 +113,12 @@ const EditProducts = () => {
           </tr>
         </thead>
         <tbody>
-          {allProducts.length === 0 ? (
+          {toolsShown.length === 0 ? (
             <tr>
               <td>No hay productos para mostrar</td>
             </tr>
           ) : (
-            allProducts.map((product) => (
+            toolsShown.map((product) => (
               <tr key={product.id}>
                 <td>{product.id}</td>
                 <td>{editData[product.id] ? (
@@ -170,7 +202,7 @@ const EditProducts = () => {
                 )}
                 </td>
                 <td>{editData[product.id] ? (
-                  <input
+                  <textarea
                     type="text"
                     value={editData[product.id].detail}
                     onChange={(e) => {
@@ -205,6 +237,7 @@ const EditProducts = () => {
           )}
         </tbody>
       </table>
+      <Pagination/>
     </div>
   );
 };

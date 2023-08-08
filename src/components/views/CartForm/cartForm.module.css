@@ -1,9 +1,18 @@
 .cartForm {
     /* border: 1px solid var(--highlights); */
-    padding: 2rem;
+    /* padding: 2rem; */
     display: flex;
     flex-direction: column;
     background-color: var(--secondary);
+    padding: 2.5rem 3rem;
+    border-radius: 0.5rem;
+
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    position: relative;
 }
 
 .labelForm {
@@ -11,27 +20,27 @@
 }
 
 .inputGral {
-    /* border: 1px solid var(--highlights); */
-    border: none;
+    border: 0.1rem solid var(--highlights);
     font-size: medium;
     width: 28rem;
     margin: 1rem;
+    height: 2rem;
 }
 
 .button {
-    height: 45px;
-    margin: 15px 0;
+    height: 4.5rem;
+    margin: 1.5rem 0;
 }
 
 .button input {
     height: 100%;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     border: none;
     color: #fff;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 0.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     background: linear-gradient(135deg, #acadad, #515755);
@@ -39,4 +48,12 @@
 
 .button input:hover {
     background: linear-gradient(-135deg, #acadad, #515755);
+}
+
+@media (max-width: 770px) {
+    .cartForm {
+        padding: 0.2rem;
+        padding-right: .8rem;
+        margin-left: 1rem;
+    }
 }

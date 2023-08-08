@@ -18,11 +18,23 @@ import {
   ERROR_LOGIN,
   ISAUTHENTICATED,
   UPDATE_TOOL_STOCK,
-  // REGISTER_STOCK_ENTRY_SUCCESS,
-  // REGISTER_STOCK_ENTRY_FAILURE,
   REGISTER_STOCK_EXIT_SUCCESS,
   REGISTER_STOCK_EXIT_FAILURE,
   ACTUAL_USER,
+  DELETE_TROLLEY,
+  GET_CATEGORY,
+  ADD_REVIEW,
+  UPDATE_REVIEW_COMMENTS,
+  DELETE_REVIEW,
+  SET_IS_AUTHENTICATED,
+  GET_SHIPPING_ADDRESS_SUCCESS,
+  SET_LAST_VISITED_ROUTE,
+  GET_USER_ID,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
+  CREATE_CART_BDD,
+  ADD_TO_CART_SUCCESS,
+  SELECT_ADDRESS
 } from "./type";
 
 const initialState = {
@@ -30,20 +42,20 @@ const initialState = {
   toolsShown: [], // éstas son las tools que van a renderizarse
   toolsDetail: {}, // Tendra la informacion detallada de cada tools.
   usersCreated: [], // Aca guardaremos nuestras User Creadas del FORM. npmbre del array MODIFICABLE
-  actualUser: {}, // temporal -> el usuarui 
-  // actualUser: {
-  //   id: 9999,
-  //   firstName: "Testing",
-  //   lastName: "User",
-  //   email: "iamatest@soyunaprueba.com",
-  //   phone: 1234567890,
-  //   address: "Una calle 99, Centro, Cba, Arg. 5000"
-  // }, // esto es nada más para verlo renderizado en el carrito
+  actualUser: {}, // temporal -> el usuar
   itemCart: [], // Aca almacenaremos todos los productos cargados en el carrito
   currentPage: 1,
   login: [], // aquí veremos el user una vez que haga hecho logIn
   errorLogin: "",
   isAuthenticated: false,
+  address: [],
+  cartError: true,
+  category: [],
+  reviews: [],
+  lastVisitedRoute: "/",
+  user: {},
+  updateUserError: null,
+  addressSelected: ''
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -72,9 +84,13 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case GET_USER:
       return {
         ...state,
-        actualUser: payload,
+        usersCreated: payload,
       };
-
+    case GET_USER_ID:
+      return {
+        ...state,
+        user: payload,
+      };
     case ADD_TO_CART:
       const itemId = payload.id;
       const existingItemIndex = state.itemCart.findIndex(
@@ -93,15 +109,13 @@ const rootReducer = (state = initialState, { type, payload }) => {
       else {
         const updatedCart = state.itemCart.map((item) => {
           if (item.id === itemId) {
-            if (item.quantity >= 5) return item
+            if (item.quantity >= 5) return item;
             return {
               ...item,
-              quantity: item.quantity + 1
-            }
-          }
-          else return item
-        }
-        );
+              quantity: item.quantity + 1,
+            };
+          } else return item;
+        });
         return {
           ...state,
           itemCart: updatedCart,
@@ -111,7 +125,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case REMOVE_FROM_CART:
       return {
         ...state,
-        itemCart: state.itemCart.filter(prod => prod.id !== payload)
+        itemCart: state.itemCart.filter((prod) => prod.id !== payload),
       };
 
     case LESS_FROM_CART:
@@ -137,6 +151,27 @@ const rootReducer = (state = initialState, { type, payload }) => {
         itemCart: resta,
       };
 
+    case DELETE_TROLLEY:
+      return {
+        ...state,
+        itemCart: [],
+      };
+
+    case CREATE_CART_BDD:
+      let cartCreated = {
+        purchaseCartId: payload,
+      }
+      return {
+        ...state,
+        cartBDD: cartCreated
+      }
+
+    case ADD_TO_CART_SUCCESS:
+      return {
+        ...state,
+        cartBDD: { ...state.cartBDD, details: payload }
+      }
+
     case SET_CURRRENT_PAGE:
       return {
         ...state,
@@ -149,7 +184,9 @@ const rootReducer = (state = initialState, { type, payload }) => {
       };
 
     case CHANGE_FILTER_CATEGORY:
-      const categoryFiltered = state.allTools.filter((e) => e.category.includes(payload));
+      const categoryFiltered = state.allTools.filter((e) =>
+        e.category.includes(payload)
+      );
       return {
         ...state,
         toolsShown: categoryFiltered,
@@ -204,7 +241,6 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         allTools: updatedAllTools,
       };
-    // case REGISTER_STOCK_ENTRY_SUCCESS:
     case REGISTER_STOCK_EXIT_SUCCESS:
       // Actualizar el estado de las herramientas después de registrar una entrada o salida de stock
       const updatedStock = state.allTools.map((tool) =>
@@ -214,7 +250,6 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         allTools: updatedStock,
       };
-    // case REGISTER_STOCK_ENTRY_FAILURE:
     case REGISTER_STOCK_EXIT_FAILURE:
       return {
         ...state,
@@ -229,23 +264,78 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case ACTUAL_USER:
       return {
         ...state,
-        actualUser: payload
-      }
+        actualUser: payload,
+        cartError: false,
+      };
 
     case CERRAR_SESION:
       return {
         ...state,
         isAuthenticated: false,
+        actualUser: {},
+        itemCart: [],
       };
     case ISAUTHENTICATED:
       return {
         ...state,
         isAuthenticated: true,
       };
+    case SET_IS_AUTHENTICATED:
+      return {
+        ...state,
+        isAuthenticated: payload,
+      };
+    case SET_LAST_VISITED_ROUTE:
+      return {
+        ...state,
+        lastVisitedRoute: payload,
+      };
     case ERROR_LOGIN:
       return {
         ...state,
         errorLogin: payload,
+      };
+    case GET_CATEGORY:
+      return {
+        ...state,
+        category: payload,
+      };
+    case ADD_REVIEW:
+      return {
+        ...state,
+        reviews: [...state.reviews, payload],
+      };
+    case UPDATE_REVIEW_COMMENTS:
+      const { id, comments } = payload;
+      return {
+        ...state,
+        reviews: state.reviews.map((review) =>
+          review.id === id ? { ...review, comments } : review
+        ),
+      };
+    case DELETE_REVIEW:
+      const reviewId = payload;
+      return {
+        ...state,
+        reviews: state.reviews.filter((review) => review.id !== reviewId),
+      };
+    case GET_SHIPPING_ADDRESS_SUCCESS:
+      // console.log('Datos recibidos en GET_SHIPPING_ADDRESS_SUCCESS:', payload);
+      return {
+        ...state,
+        address: payload,
+      };
+
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        actualUser: payload, // ACA actualizamos los datos del usuario actualizado
+        updateUserError: null, // OJO  para reiniciar el error en caso de que haya ocurrido anteriormente
+      };
+    case UPDATE_USER_ERROR:
+      return {
+        ...state,
+        updateUserError: payload, // ACA almacenamos el error en caso de que ocurra un error al actualizar el usuario
       };
     default:
       return {

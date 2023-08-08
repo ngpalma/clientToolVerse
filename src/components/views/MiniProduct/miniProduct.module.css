@@ -71,3 +71,19 @@
     font-weight: 700;
     color: var(--warnings);
 }
+
+@media (max-width: 770px) {
+    .divMiniProd {
+        width: 90%;
+        margin-left: 1rem;
+    }
+
+    .imgMiniProd {
+        width: 5rem;
+        height: auto;
+    }
+
+    .brandModelMini {
+        margin-top: 1rem;
+    }
+}

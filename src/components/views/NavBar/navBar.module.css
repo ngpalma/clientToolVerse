@@ -51,6 +51,19 @@
     margin-left: 2rem;
 }
 
+@media (min-width: 816px) {
+    .navBar {
+        margin: auto;
+        max-width: 90vw;
+    }
+
+    .logOnCart {
+        display: flex;
+        justify-content: space-around;
+        margin-right: 13rem;
+    }
+}
+
 @media (max-width: 815px) {
     .toHome {
         height: 5.5rem;
@@ -88,7 +101,6 @@
         width: 7rem;
         font-size: x-small;
     }
-
 }
 
 @media (max-width: 480px) {

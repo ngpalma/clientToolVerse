@@ -89,19 +89,19 @@
 }
 
 .button {
-    height: 45px;
+    height: 4.5rem;
     margin: 1rem;
 }
 
 .button input {
     height: 100%;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     border: none;
     color: #fff;
-    font-size: 10px;
+    font-size: 1rem;
     font-weight: bold;
-    letter-spacing: 1px;
+    letter-spacing: 0.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     background: linear-gradient(135deg, #acadad, #515755);

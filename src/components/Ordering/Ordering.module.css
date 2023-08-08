@@ -1,10 +1,9 @@
-
 .alphabeticalOrder,
 .orderByPrice {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  border-radius: 7px;
+  border-radius: 0.7rem;
   align-items: center;
   color: rgba(0, 0, 0, .9);
   border: 1px solid var(--secondary);
@@ -24,19 +23,19 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .button {
-  height: 45px;
+  height: 4.5rem;
   margin: 1rem;
 }
 
 .button input {
   height: 100%;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   border: none;
   color: #fff;
   font-size: 10px;
@@ -54,4 +53,3 @@
 .orderTitle {
   font-size: medium;
 }
-

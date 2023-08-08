@@ -1,19 +1,19 @@
 .container {
-  max-width: 700px;
+  max-width: 70rem;
   width: 100%;
   background-color: #f4c434;
-  padding: 25px 30px;
-  border-radius: 5px;
+  padding: 2.5rem 3rem;
+  padding-left: 1rem;
+  border-radius: 0.5rem;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-  margin: 30px auto 20px;
+  margin: 3rem auto 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-
 .title {
-  font-size: 25px;
+  font-size: 2.5rem;
   font-weight: bold;
   position: relative;
 }
@@ -22,30 +22,30 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 20px 0 12px 0;
+  margin: 2rem 0 1.2rem 0;
   font-size: medium;
 }
 
 .user-details .input-box {
-  margin-bottom: 15px;
-  width: calc(100% / 2 - 20px);
+  margin-bottom: 1.5rem;
+  width: calc(100% / 2 - 2rem);
 }
 
 .user-details .input-box span.details {
   display: block;
   font-weight: 500;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
 }
 
 .user-details .input-box input {
-  height: 45px;
+  height: 4.5rem;
   width: 100%;
   outline: none;
-  font-size: 16px;
-  border-radius: 5px;
-  padding-left: 15px;
-  border: 1px solid #ccc;
-  border-bottom-width: 2px;
+  font-size: 1.6rem;
+  border-radius: 0.5rem;
+  padding-left: 1.5rem;
+  border: 0.1rem solid #ccc;
+  border-bottom-width: 0.2rem;
   transition: all 0.3s ease;
 }
 
@@ -53,26 +53,19 @@
   border-color: #515755;
 }
 
-.rol-details .rol-title {
-  font-size: 20px;
-  font-weight: 500;
-  text-align: center;
+.user-details .input-box input.error-border {
+  border-color: red;
 }
 
-.user-details .input-box.rol {
-  width: 100%;
-  text-align: center;
-}
-
-.user-details .input-box .rol {
-  width: 60%; /* Ajusta el ancho según tus preferencias */
-  margin: 0 auto; /* Centra horizontalmente el select */
+.user-details .input-box input.error-border:focus {
+  border-color: red;
+  box-shadow: 0 0 5px red;
 }
 
 .category {
   display: flex;
   width: 80%;
-  margin: 14px 0;
+  margin: 1.4rem 0;
   justify-content: space-between;
 }
 
@@ -83,12 +76,12 @@
 }
 
 .category label .dot {
-  height: 18px;
-  width: 18px;
+  height: 1.8rem;
+  width: 1.8rem;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 1rem;
   background: #d9d9d9;
-  border: 5px solid transparent;
+  border: 0.5rem solid transparent;
   transition: all 0.3s ease;
 }
 
@@ -103,19 +96,19 @@ input[type="radio"] {
 }
 
 .button {
-  height: 45px;
-  margin: 35px 0;
+  height: 4.5rem;
+  margin: 3.5rem 0;
 }
 
 .button input {
   height: 100%;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   border: none;
   color: #fff;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 0.1rem;
   cursor: pointer;
   transition: all 0.3s ease;
   background: linear-gradient(135deg, #acadad, #515755);
@@ -129,32 +122,37 @@ input[type="radio"] {
   color: red;
 }
 
-@media (max-width: 584px) {
-  .container {
-    max-width: 100%;
+@media (max-width: 768px) {
+  .user-details .input-box {
+    width: 100%;
   }
 
-  .user-details .input-box {
-    margin-bottom: 15px;
-    width: 100%;
+  .user-details .input-box span.details {
+    text-align: center; 
   }
 
   .category {
-    width: 100%;
-  }
-
-  .content form .user-details {
-    max-height: 300px;
-    overflow-y: scroll;
-  }
-
-  .user-details::-webkit-scrollbar {
-    width: 5px;
-  }
-}
-
-@media (max-width: 459px) {
-  .container .content .category {
     flex-direction: column;
+  }
+
+  .category label {
+    margin-bottom: 1rem; 
+  }
+
+  .button {
+    margin: 2.5rem 0;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .user-details .input-box input {
+    height: 3.5rem;
+    font-size: 1.4rem;
+  }
+
+  .button input {
+    font-size: 1.6rem;
   }
 }

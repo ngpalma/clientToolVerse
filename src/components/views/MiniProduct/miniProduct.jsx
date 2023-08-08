@@ -7,6 +7,7 @@ import { useState } from "react";
 import * as actions from "../../../redux/actions";
 
 
+
 const MiniProduct = ({ id, image, name, model, brand, price, quantity, feature }) => {
     const tools = useSelector((state) => state.allTools)
     const product = tools.find((item) => item.id === id)
@@ -18,13 +19,31 @@ const MiniProduct = ({ id, image, name, model, brand, price, quantity, feature }
 
     // Borra el Producto por completo
     const handleDelete = (id) => {
-        dispatch(actions.removeFromCart(id));
+        let answer = window.confirm("Seguro que quieres eliminar este producto del carrito?");
+        if (answer) {
+            dispatch(actions.removeFromCart(id));
+        }
+        else {
+            return
+        }
     };
 
     // Quantity del Producto - 1 -> Stock + 1
-    const handleLess = (id) => {
-        dispatch(actions.lessFromCart(id));
-        setLocalStock(localStock + 1)
+    const handleLess = (id, quantity) => {
+        if (quantity > 1) {
+            dispatch(actions.lessFromCart(id));
+            setLocalStock(localStock + 1)
+        }
+        else {
+            let answer = window.confirm("Queda sólo un producto en el carrito. Quieres eliminarlo")
+            if (answer) {
+                dispatch(actions.lessFromCart(id));
+                setLocalStock(localStock + 1)
+            }
+            else {
+                return
+            }
+        }
     }
 
     // Quantity del Producto + 1 -> Stock - 1 / SOLO SI LA QUANTITY ES 5 O MENOS
@@ -56,7 +75,7 @@ const MiniProduct = ({ id, image, name, model, brand, price, quantity, feature }
             }
             <div className={style.todoQtity}>
                 <div className={style.quantMiniProd}>Quantity {quantity}</div>
-                <button className={style.lessQtity} onClick={() => handleLess(id)}>
+                <button className={style.lessQtity} onClick={() => handleLess(id, quantity)}>
                     <img src={menos} alt="menos" className={style.menos} />
                 </button>
                 <button className={style.addQtity} onClick={() => handleAdd(id, image, name, model, brand, feature, price, quantity)}>

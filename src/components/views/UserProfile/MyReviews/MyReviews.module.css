@@ -1,0 +1,19 @@
+.divReview {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-around;
+    align-items: center;
+    border: 0.1rem solid var(--highlights);
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.nameProd {
+    font-size: larger;
+    font-weight: 700;
+}
+
+.imgProd {
+    height: 8rem;
+    margin-left: -9rem;
+}

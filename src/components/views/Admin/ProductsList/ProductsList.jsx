@@ -1,12 +1,16 @@
 import React, { useEffect} from 'react';
 import styles from "./ProductsList.module.css";
-import { getTools } from '../../../../redux/actions';
+import { getTools,setCurrentPage } from '../../../../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
+import Pagination from "../../../Pagination/Pagination"
+import SearchBar from '../SearchBarAdmin/searchBar';
+import Filters from '../../../Filters/Filters';
 
 const ProductsList = () => {
  const allProducts = useSelector((state) => state.toolsShown );
- console.log(allProducts);
+ const currentPage = useSelector((state) => state.currentPage);
 const dispatch = useDispatch()
+const itemsPerPage = 12;
 
     useEffect(() => {
         try {
@@ -17,13 +21,26 @@ const dispatch = useDispatch()
         
     }, [dispatch]);
 
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const toolsShown = allProducts.slice(startIndex, endIndex);
+
+
     return (
         <div>
             <h1 className={styles.title}>LISTADO DE PRODUCTOS</h1>
+            <SearchBar/>
+            <Filters/>
+            <div className={styles.button}>
+                    <input type="submit" value="Restablecer filtros" onClick={() => {
+                        dispatch(getTools());
+                        dispatch(setCurrentPage(1));
+                    }} />
+                </div>
             <table className={styles.table}>
                 <thead>
                     <tr>
-                    <th>ID</th>
+                    <th>SKU</th>
                     <th>Producto</th>
                     <th>Modelo</th>
                     <th>Marca</th>
@@ -32,12 +49,12 @@ const dispatch = useDispatch()
                     </tr>
                 </thead>
                 <tbody>
-                    {allProducts.length === 0 ? (
+                    {toolsShown.length === 0 ? (
                         <tr>
                             <td>No hay productos para mostrar</td>
                         </tr>
                     ) : (
-                        allProducts.map((product) => (
+                        toolsShown.map((product) => (
                             <tr key={product.id}>
                                 <td>{product.id}</td>
                                 <td>{product.name}</td>
@@ -53,6 +70,7 @@ const dispatch = useDispatch()
                     }
                 </tbody>
             </table>
+            <Pagination/>
         </div>
     );
 }

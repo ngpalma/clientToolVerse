@@ -5,10 +5,11 @@
   gap: 1em;
   justify-content: space-evenly;
 }
+
 .button {
   display: inline-block;
-  padding: 1px 5px;
+  padding: 0.1rem 0.5rem;
   background-color: #e0e1cb;
   border: 0.5px solid #cccccc;
-  border-radius: 20px;
+  border-radius: 2rem;
 }
