@@ -11,6 +11,8 @@ const MPFeedback = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.login.id);
+  const shippingAddressId = useSelector((state) => state.addressSelected.id)
+
   const paymentMethodId = 1 // de momento queda en 1 porque este componente se renderiza desde MercadoPago -> al implementar PayPal tendremos que ver qué implementamos;
   const [loading, setLoading] = useState(true)
 
@@ -18,21 +20,18 @@ const MPFeedback = () => {
 
   const [purchaseCartId, setPurchaseCartId] = useState('');
   const [trolley, setTrolley] = useState([]);
-  const [shippingAddressId, setShippingAddressId] = useState('');
 
   useEffect(() => {
     const getInfo = async () => {
       try {
         let purchaseCartId = await dispatch(actions.getLastPuchasteCart(userId));
         let trolley = await dispatch(actions.getProductsInCart(purchaseCartId));
-        //shippingAddressId = await dispatch(actions.checkShippingAddressId());
-        //let shippingAddressId = 1
 
         setPurchaseCartId(purchaseCartId);
         setTrolley(trolley)
-        setShippingAddressId(1)
 
-        setLoading(false);
+        if (shippingAddressId) setLoading(false);
+
       } catch (error) {
         console.log('Error buscando la información', error)
       }
@@ -40,13 +39,6 @@ const MPFeedback = () => {
 
     getInfo()
   }, [dispatch, userId]);
-
-
-  // const paymentId = queryParams.get("payment_id");
-  // const nOrder = queryParams.get("merchant_order_id");
-
-  // Registrar Salida del Stock
-  
 
   useEffect(() => {
     const exitStock = () => {
@@ -58,7 +50,7 @@ const MPFeedback = () => {
         dispatch(actions.updateProductStock(productId, newStock)); // Actualizamos el stock en el estado global
       });
     };
-  
+
     const calculateTotal = () => {
       let suma = 0;
       trolley.forEach((product) => {
@@ -67,19 +59,19 @@ const MPFeedback = () => {
       suma = parseFloat(suma.toFixed(2));
       return suma;
     };
-  
+
     // para que se eliminen los productos en el carrito que acaba de ser pagado, se modifique el stock y se cree la orden de compra en la base de datos
     const axnsFinales = () => {
       try {
         // calculo el total de la compra
         const total = calculateTotal();
-  
+
         // se crea la orden de compra en la base de datos
         dispatch(actions.addPurchaseOrder(userId, purchaseCartId, shippingAddressId, paymentMethodId, total))
-  
+
         // registra la salida del Stock -> esto sí ocurre exitosamente
         exitStock();
-  
+
         // elimina el carrito del estado de redux 
         dispatch(actions.deleteTrolley())
       }

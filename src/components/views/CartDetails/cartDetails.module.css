@@ -93,6 +93,12 @@
     font-size: small;
 }
 
+.errorAddress {
+    margin-top: 2rem;
+    font-weight: bold;
+    font-size: small;
+}
+
 @media (max-width: 770px) {
     .deleteAll {
         margin-left: 30rem;

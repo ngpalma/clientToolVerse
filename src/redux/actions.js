@@ -50,7 +50,10 @@ import {
   GET_USER_ID_ERROR,
   CREATE_CART_BDD,
   ORDERS,
-  DELETE_ORDER
+  DELETE_ORDER,
+  SELECT_ADDRESS,
+  // YES_CART_ERROR,
+  // NO_CART_ERROR
 } from "./type";
 
 export const getToolsByName = (tool) => {
@@ -202,6 +205,18 @@ export const getUser = (name) => {
     }
   };
 };
+
+// export const yesCartError = () => {
+//   return {
+//     type: YES_CART_ERROR
+//   }
+// };
+
+// export const noCartError = () => {
+//   return {
+//     type: NO_CART_ERROR
+//   }
+// };
 
 export const addToCart = (item) => {
   return {
@@ -417,7 +432,7 @@ export const getLastPuchasteCart = (userId) => {
   return async function () {
     try {
       const user = await axios.get(`/user/${userId}`)
-      console.log(user);
+      console.log('el user con toda su info', user);
       const carts = user.data.purchaseCarts
 
       // Encontrar el objeto cart con el id más grande
@@ -506,6 +521,20 @@ export const getShippingAddressByUserId = (userId) => async (dispatch) => {
     });
   }
 };
+
+export const selectAddress = (address) => async (dispatch) => {
+  console.log('los datos que recibe las actions', address)
+  try {
+    dispatch({
+      type: SELECT_ADDRESS,
+      payload: address
+    })
+
+
+  } catch (error) {
+    console.log('Error al seleccionar la dirección de envío', error)
+  }
+}
 
 //Actions Reviews
 export const addReview = (review) => ({

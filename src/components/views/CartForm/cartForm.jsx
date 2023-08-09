@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 import React, { useEffect, useState } from "react";
 import * as actions from "../../../redux/actions";
 import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 export function validate({ firstName, lastName, phone, country, state, city, address, postalCode }) {
     let cartErrors = {};
@@ -17,13 +18,21 @@ export function validate({ firstName, lastName, phone, country, state, city, add
     return cartErrors;
 }
 
-export default function CartForm() {
-
+export default function CartForm({ cartError, setCartError }) {
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const login = useSelector(state => state.login)
     const address = useSelector(state => state.address)
-    console.log('useSelector address', address);
-    console.log('userSelector address.country', address && address.country)
+    const [addAddress, setAddAddress] = useState(false); //para activar la form del address
+
+    const [selectedAddress, setSelectedAddress] = useState({
+        id: '',
+        country: '',
+        state: '',
+        city: '',
+        address: '',
+        postalCode: ''
+    }); // la address que va a enviarse al estado global para ser utilizada luego, don't forget id!!!!
 
     const [user, setUser] = useState({
         id: login.id,
@@ -66,7 +75,22 @@ export default function CartForm() {
         }
     }, [login.id, address]);
 
-     
+    const handleLoadAddress = () => {
+        navigate('/userprofile')
+    };
+
+    const handleSelect = (addressIndex) => {
+        // me devuelve un id de address -> vamos a buscar los datos de esta address
+        const indexAsNumber = parseInt(addressIndex, 10); // para comparar nro con nro
+
+        const datos = address.find((address) => address.id === indexAsNumber);
+        console.log('los datos devueltos', datos)
+        setSelectedAddress(datos);
+        console.log('así queda la addressSeleccionada', selectedAddress)
+        // aquí tengo que despachar la acción para que el estado global muestre esa dirección
+        dispatch(actions.selectAddress(datos))
+    };
+
     const handleInputChange = (event) => {
         const { value, name } = event.target;
         setUser(prevUser => ({
@@ -80,23 +104,25 @@ export default function CartForm() {
                 [name]: value
             })
         )
-    };    
-
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const errors = validate(user);
         if (Object.values(errors).length === 0) {
             let dirPostal = {
-                country: user.country,
-                state: user.state,
-                city: user.city,
-                address: user.address,
-                postalCode: user.postalCode,
-                userId: login.id
+                id: selectedAddress.id,
+                country: selectedAddress.country,
+                state: selectedAddress.state,
+                city: selectedAddress.city,
+                address: selectedAddress.address,
+                postalCode: selectedAddress.postalCode,
+                //userId: login.id
             }
-            dispatch(actions.createShippingAddress(dirPostal));
+            dispatch(actions.selectAddress(dirPostal))
+            // dispatch(actions.createShippingAddress(dirPostal));
             dispatch(actions.actualUser(user));
+            setCartError(false)
             alert('Información guardada con éxito')
         }
         else {
@@ -124,29 +150,6 @@ export default function CartForm() {
                     cartErrors.lastName && <p className={style.warning}>{cartErrors.lastName}</p>
                 }
 
-                <label className={style.labelForm}>Dirección postal: </label>
-                <input type="text" className={style.inputGral} name='country' placeholder='País' onChange={handleInputChange} value={user.country} />
-                {
-                    cartErrors.country && <p className={style.warning}>{cartErrors.country}</p>
-                }
-                <input type="text" className={style.inputGral} name='state' placeholder='Estado' onChange={handleInputChange} value={user.state} />
-                {
-                    cartErrors.state && <p className={style.warning}>{cartErrors.state}</p>
-                }
-                <input type="text" className={style.inputGral} name='city' placeholder='Ciudad' onChange={handleInputChange} value={user.city} />
-                {
-                    cartErrors.city && <p className={style.warning}>{cartErrors.city}</p>
-                }
-                <input type="text" className={style.inputGral} name='address' placeholder='Calle y número' onChange={handleInputChange} value={user.address} />
-                {
-                    cartErrors.address && <p className={style.warning}>{cartErrors.address}</p>
-                }
-                <input type="text" className={style.inputGral} name='postalCode' placeholder='Código Postal' onChange={handleInputChange} value={user.postalCode} />
-                {
-                    cartErrors.postalCode && <p className={style.warning}>{cartErrors.postalCode}</p>
-                }
-                <span>  </span>
-
                 <label className={style.labelForm}>Email: </label>
                 <input type="text" className={style.inputGral} name='email' placeholder='E-mail del receptor' onChange={handleInputChange} value={user.email} />
                 <span>  </span>
@@ -157,6 +160,71 @@ export default function CartForm() {
 
                 {
                     cartErrors.phone && <p className={style.warning}>{cartErrors.phone}</p>
+                }
+
+
+                <label className={style.labelForm}>Dirección postal: </label>
+                <div>
+                    {!address.length ? (
+                        <div>
+                            <h3>No hay direcciones cargadas</h3>
+                            <br />
+                            <button onClick={handleLoadAddress}>Cargar dirección</button>
+                        </div>
+                    ) : (
+                        <div>
+                            <select
+                                name="address"
+                                onChange={(e) => handleSelect(e.target.value)}
+                            >
+                                <option value="" key="first" hidden>
+                                    Seleccione una dirección
+                                </option>
+                                {address.map((a, i) => (
+                                    <option value={a.id} key={i}>
+                                        {a.address} ({a.city}, {a.state}, {a.country},{" "}
+                                        {a.postalCode})
+                                    </option>
+                                ))}
+                            </select>
+                            {selectedAddress !== null && (
+                                <div>
+                                    <h2>Pais: {selectedAddress.country}</h2>
+                                    <h2>Estado: {selectedAddress.state}</h2>
+                                    <h2>Ciudad: {selectedAddress.city}</h2>
+                                    <h2>Dirección: {selectedAddress.address}</h2>
+                                    <h2>Código Postal: {selectedAddress.postalCode}</h2>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {
+                    addAddress && <div className={style.addAddress}>
+                        <input type="text" className={style.inputGral} name='country' placeholder='País' onChange={handleInputChange} value={user.country} />
+                        {
+                            cartErrors.country && <p className={style.warning}>{cartErrors.country}</p>
+                        }
+                        <input type="text" className={style.inputGral} name='state' placeholder='Estado' onChange={handleInputChange} value={user.state} />
+                        {
+                            cartErrors.state && <p className={style.warning}>{cartErrors.state}</p>
+                        }
+                        <input type="text" className={style.inputGral} name='city' placeholder='Ciudad' onChange={handleInputChange} value={user.city} />
+                        {
+                            cartErrors.city && <p className={style.warning}>{cartErrors.city}</p>
+                        }
+                        <input type="text" className={style.inputGral} name='address' placeholder='Calle y número' onChange={handleInputChange} value={user.address} />
+                        {
+                            cartErrors.address && <p className={style.warning}>{cartErrors.address}</p>
+                        }
+                        <input type="text" className={style.inputGral} name='postalCode' placeholder='Código Postal' onChange={handleInputChange} value={user.postalCode} />
+                        {
+                            cartErrors.postalCode && <p className={style.warning}>{cartErrors.postalCode}</p>
+                        }
+                        <span>  </span>
+
+                    </div>
                 }
 
                 <div className={style.button}>

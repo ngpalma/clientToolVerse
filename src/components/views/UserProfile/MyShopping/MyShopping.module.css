@@ -1,0 +1,19 @@
+/* myShopping.module.css */
+
+.purchaseItem {
+    border: 1px solid var(--buttons);
+    border-radius: 0.5rem;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    width: calc(33.33% - 20px);
+    box-sizing: border-box;
+    justify-content: center;
+  }
+  
+  @media (max-width: 768px) {
+    .purchaseItem {
+      width: 100%;
+    }
+  }
+  

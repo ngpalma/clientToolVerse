@@ -9,43 +9,48 @@ import * as actions from "../../../redux/actions";
 import React, { useEffect, useState } from "react";
 import loadingGear from "../img/Spin-1s-200px.gif"
 
-export default function CartDetails() {
+export default function CartDetails({ cartError, setCartError }) {
   const trolley = useSelector((state) => state.itemCart);
-  // const cartError = useSelector((state) => state.cartError);
   const userId = useSelector((state) => state.login.id)
   const address = useSelector((state) => state.address)
+  const selectedAddress = useSelector((state) => state.addressSelected)
+  console.log('la address seleccionada en el cartDetail', selectedAddress)
+  const actualUser = useSelector((state) => state.actualUser);
+  console.log('el actual user', actualUser)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState("");
 
-  const calculateTotal = () => {
-    let suma = 0;
-    trolley.forEach((product) => {
-      suma = suma + product.price * product.quantity;
-    });
-    suma = parseFloat(suma.toFixed(2));
-    return setTotal(suma);
-  };
 
   useEffect(() => {
+    const calculateTotal = () => {
+      let suma = 0;
+      trolley.forEach((product) => {
+        suma = suma + product.price * product.quantity;
+      });
+      suma = parseFloat(suma.toFixed(2));
+      return setTotal(suma);
+    };
     try {
       calculateTotal();
       if (!address) dispatch(actions.getShippingAddressByUserId(userId));
     } catch (error) {
       console.log("Error al calcular el total", error);
     }
-  });
+  }, [selectedAddress, address, dispatch, userId, trolley]);
 
   const continuePurchase = async () => {
     try {
+      if (!selectedAddress && !actualUser) {
+        // activa el loader
+        //setLoading(true);
+        alert('Por favor verifica que toda la información sea correcta')
+        return
+      }
       // si ya he clickeado no hace nada
       if (loading) return;
 
-      if (!address)
-
-        // activa el loader
-        setLoading(true)
 
       // Por un lado crea el carrito de compras -> necesito el userId! y obtengo el purchaseCartId
       const purchaseCartId = await dispatch(actions.createCartBdd(userId));
@@ -65,9 +70,11 @@ export default function CartDetails() {
       const carritoListo = await dispatch(actions.addDetail(purchaseCartId, productsTrolley));
 
       // Nos lleva a la página siguiente una vez que el carrito esté listo
-      if (carritoListo) {
+      if (carritoListo && selectedAddress) {
         // desactiva el loader
         setLoading(false);
+
+        setCartError(true)
 
         // nos lleva a la siguiente página
         navigate("/purchaseCartDisplay");
@@ -127,7 +134,7 @@ export default function CartDetails() {
             </button>
             <div className={style.total}> Monto total ${total} </div>
             {
-              address ? <div>
+              !cartError && actualUser && selectedAddress ? <div>
                 {
                   loading ? <div> <img src={loadingGear} alt='Loading resources' /> </div>
                     : <div className={style.button}>
@@ -141,7 +148,7 @@ export default function CartDetails() {
 
               </div>
 
-                : <div> Para avanzar con tu compra, por favor completa tus datos </div>
+                : <div className={style.errorAddress}> Para avanzar con tu compra, por favor completa tus datos </div>
             }
           </div>
         </div>

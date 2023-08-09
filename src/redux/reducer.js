@@ -36,7 +36,9 @@ import {
   ADD_TO_CART_SUCCESS,
   SELECT_ADDRESS,
   ORDERS,
-  DELETE_ORDER
+  DELETE_ORDER,
+  // YES_CART_ERROR,
+  // NO_CART_ERROR
 } from "./type";
 
 const initialState = {
@@ -94,6 +96,19 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         user: payload,
       };
+
+    // case YES_CART_ERROR:
+    //   return {
+    //     ...state,
+    //     cartError: true
+    //   };
+
+    // case NO_CART_ERROR:
+    //   return {
+    //     ...state,
+    //     cartError: false
+    //   };
+
     case ADD_TO_CART:
       const itemId = payload.id;
       const existingItemIndex = state.itemCart.findIndex(
@@ -268,7 +283,6 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         actualUser: payload,
-        cartError: false,
       };
 
     case CERRAR_SESION:
@@ -329,6 +343,12 @@ const rootReducer = (state = initialState, { type, payload }) => {
         address: payload,
       };
 
+    case SELECT_ADDRESS:
+      return {
+        ...state,
+        addressSelected: payload
+      }
+
     case UPDATE_USER_SUCCESS:
       return {
         ...state,
@@ -340,16 +360,16 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         updateUserError: payload, // ACA almacenamos el error en caso de que ocurra un error al actualizar el usuario
       };
-      case ORDERS:
-        return {
-          ...state,
-          orders: payload,
-        };
-        case DELETE_ORDER:
-          return {
-            ...state,
-            orders: state.orders.filter(order => order.id !== payload),
-          };
+    case ORDERS:
+      return {
+        ...state,
+        orders: payload,
+      };
+    case DELETE_ORDER:
+      return {
+        ...state,
+        orders: state.orders.filter(order => order.id !== payload),
+      };
     default:
       return {
         ...state,
