@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import MyProfileForm from "./MyProfileForm";
 import { validateForm } from "./Validation";
-import { updateUser } from "../../../../redux/actions";
+import { getUserById, updateUser } from "../../../../redux/actions";
 
 const MyProfile = ({ user }) => {
+  const id = user.id;
   const dispatch = useDispatch();
   const [active, setActive] = useState(false);
   const [error, setError] = useState("");
@@ -23,7 +24,7 @@ const MyProfile = ({ user }) => {
       email: user.email,
       phone: user.phone,
     });
-  }, [user]);
+  }, [user, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,8 +36,9 @@ const MyProfile = ({ user }) => {
     );
     setError(validationError);
     if (!validationError) {
-      dispatch(updateUser(user.id, formProfile))
+      dispatch(updateUser(id, formProfile))
         .then(() => {
+          dispatch(getUserById(id));
           console.log("Registro exitoso");
           setError("");
           alert("¡Cambio exitoso!");

@@ -146,7 +146,7 @@ export default function PurchaseOrder() {
                                 {
                                     trolley.map((product) => {
                                         return (
-                                            <div className={style.prodDetails}>
+                                            <div key={product.id} className={style.prodDetails}>
                                                 <div className={style.nameImgMini}>
                                                     <div className={style.nameMiniProd}>{product.name}</div>
                                                     <img src={product.image} alt="producto" className={style.imgProd} />

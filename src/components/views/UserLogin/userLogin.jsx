@@ -55,7 +55,7 @@ export default function UserLogin() {
         <div className={styles.UserMenu} ref={userMenuRef}>
           {isAuthenticated ? ( 
             <>            
-              <button onClick={() => handleMenuItemClick("/login")}>Panel de Usuario</button>
+              <button onClick={() => handleMenuItemClick("/userProfile")}>Panel de Usuario</button>
               <button onClick={handleLogout}>Cerrar Sesión</button>
             </>
           ) : (

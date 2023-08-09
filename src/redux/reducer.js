@@ -34,6 +34,9 @@ import {
   UPDATE_USER_ERROR,
   CREATE_CART_BDD,
   ADD_TO_CART_SUCCESS,
+  SELECT_ADDRESS,
+  ORDERS,
+  DELETE_ORDER
 } from "./type";
 
 const initialState = {
@@ -54,7 +57,8 @@ const initialState = {
   lastVisitedRoute: "/",
   user: {},
   updateUserError: null,
-  addressSelected: ''
+  addressSelected: '',
+  orders: []
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -336,6 +340,16 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         updateUserError: payload, // ACA almacenamos el error en caso de que ocurra un error al actualizar el usuario
       };
+      case ORDERS:
+        return {
+          ...state,
+          orders: payload,
+        };
+        case DELETE_ORDER:
+          return {
+            ...state,
+            orders: state.orders.filter(order => order.id !== payload),
+          };
     default:
       return {
         ...state,

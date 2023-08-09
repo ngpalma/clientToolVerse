@@ -13,12 +13,10 @@ import swal from "sweetalert2";
 const EditProducts = () => {
   const allProducts = useSelector((state) => state.toolsShown);
   const currentPage = useSelector((state) => state.currentPage)
-  //console.log(allProducts);
   const dispatch = useDispatch();
   const itemsPerPage = 12;
 
   const [editData, setEditData] = useState({});
-  // const mySwal = withReactContent(swal)
 
   useEffect(() => {
     try {
@@ -47,7 +45,7 @@ const EditProducts = () => {
 
     if(editedProduct) {
       const {name, model, brand, price, detail} = editedProduct;
-      await axios.put(`/products/${id}`, {
+      await axios.put(`http://localhost:3001/products/${id}`, {
       name,
       model,
       brand,
@@ -63,6 +61,7 @@ const EditProducts = () => {
       return updatedEditData;
     })
     };
+    console.log(`PUT request http://localhost:3001/products/${id}`);
     return new swal({
       title: "Success",
       text: "Edicion exitosa",

@@ -27,7 +27,7 @@ import { useDispatch, useSelector} from "react-redux";
 import { setIsAuthenticated, getShippingAddressByUserId } from "./redux/actions";
 import {persistor} from './redux/store';
 import Order from "./components/views/Admin/Order/Order";
-
+import PpFeedback from "./components/PpFeedback/PpFeedback";
 
 function App() {
 
@@ -92,6 +92,7 @@ function App() {
         <Route path="/createProduct" element={<CreateProduct />} />
         <Route path="/admin/user" element={<User />} />
         <Route path="/admin/order" element={<Order />} />
+        <Route path="/ppfeedback" element={<PpFeedback/>}/>
 
 
           <Route path="/admin" element={<Dashboard />} />

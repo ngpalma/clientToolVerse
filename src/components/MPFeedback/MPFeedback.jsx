@@ -42,54 +42,56 @@ const MPFeedback = () => {
   }, [dispatch, userId]);
 
 
-  const paymentId = queryParams.get("payment_id");
-  const nOrder = queryParams.get("merchant_order_id");
+  // const paymentId = queryParams.get("payment_id");
+  // const nOrder = queryParams.get("merchant_order_id");
 
   // Registrar Salida del Stock
-  const exitStock = () => {
-    trolley.forEach((product) => {
-      const productId = product.id;
-      const quantity = product.quantity;
-      dispatch(actions.registerStockExit(productId, quantity)); // Registramos la salida del stock
-      const newStock = product.stock - quantity; // Calculamos el nuevo stock después de la compra
-      dispatch(actions.updateProductStock(productId, newStock)); // Actualizamos el stock en el estado global
-    });
-  };
-
-  const calculateTotal = () => {
-    let suma = 0;
-    trolley.forEach((product) => {
-      suma = suma + product.product.price * product.quantity;
-    });
-    suma = parseFloat(suma.toFixed(2));
-    return suma;
-  };
-
-  // para que se eliminen los productos en el carrito que acaba de ser pagado, se modifique el stock y se cree la orden de compra en la base de datos
-  const axnsFinales = () => {
-    try {
-      // calculo el total de la compra
-      const total = calculateTotal();
-
-      // se crea la orden de compra en la base de datos
-      dispatch(actions.addPurchaseOrder(userId, purchaseCartId, shippingAddressId, paymentMethodId, total))
-
-      // registra la salida del Stock -> esto sí ocurre exitosamente
-      exitStock();
-
-      // elimina el carrito del estado de redux 
-      dispatch(actions.deleteTrolley())
-    }
-    catch (error) {
-      console.log('Error al realizar las axnsFinales', error)
-    }
-  }
+  
 
   useEffect(() => {
+    const exitStock = () => {
+      trolley.forEach((product) => {
+        const productId = product.id;
+        const quantity = product.quantity;
+        dispatch(actions.registerStockExit(productId, quantity)); // Registramos la salida del stock
+        const newStock = product.stock - quantity; // Calculamos el nuevo stock después de la compra
+        dispatch(actions.updateProductStock(productId, newStock)); // Actualizamos el stock en el estado global
+      });
+    };
+  
+    const calculateTotal = () => {
+      let suma = 0;
+      trolley.forEach((product) => {
+        suma = suma + product.product.price * product.quantity;
+      });
+      suma = parseFloat(suma.toFixed(2));
+      return suma;
+    };
+  
+    // para que se eliminen los productos en el carrito que acaba de ser pagado, se modifique el stock y se cree la orden de compra en la base de datos
+    const axnsFinales = () => {
+      try {
+        // calculo el total de la compra
+        const total = calculateTotal();
+  
+        // se crea la orden de compra en la base de datos
+        dispatch(actions.addPurchaseOrder(userId, purchaseCartId, shippingAddressId, paymentMethodId, total))
+  
+        // registra la salida del Stock -> esto sí ocurre exitosamente
+        exitStock();
+  
+        // elimina el carrito del estado de redux 
+        dispatch(actions.deleteTrolley())
+      }
+      catch (error) {
+        console.log('Error al realizar las axnsFinales', error)
+      }
+    }
+
     if (!loading && trolley?.length > 0 && userId && purchaseCartId && shippingAddressId) {
       axnsFinales();
     }
-  }, [loading, trolley, userId, purchaseCartId, shippingAddressId]);
+  }, [dispatch, loading, purchaseCartId, shippingAddressId, trolley, userId]);
 
   return (
     <div className={style.containerFeedback}>

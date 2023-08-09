@@ -1,78 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../../../redux/actions";
-import Swal from "sweetalert2";
-import styles from "./Order.module.css"
+import { deleteOrder, getOrders } from "../../../../redux/actions";
+import styles from "./Order.module.css";
 
 const Order = () => {
-  const dispatch = useDispatch()
-  const trolley = useSelector((state) => state.itemCart);
-  const [EditTotal, setEditTotal] = useState({});
-console.log(trolley);
+  const dispatch = useDispatch();
+  const orders = useSelector(state => state.orders);
+  console.log(orders);
 
-  useEffect(()=> {
-    try {
-      dispatch(addToCart())
-    } catch (error) {
-      console.log("Error al obetener la Orden", error);
-    }
-  }, [dispatch])
+  useEffect(() => {
+    dispatch(getOrders());
+  }, [dispatch]);
 
-  const handleEdit = (id, name, brand, model, price, quantity) => {
-    setEditTotal ((prev)=> ({
-      ...prev, [id]: {
-        id,
-        name,
-        brand,
-        model,
-        price,
-        quantity
-      } 
-    }))
-  }
-  const handleSave = async (id) => {
-    try {
-      const editOrder = EditTotal[id]
-      if (editOrder) {
-        const {name, brand, model, price, quantity} = editOrder
-      }
-      await dispatch(addToCart(id))
+  const handleDeleteOrder = (orderId) => {
+    dispatch(deleteOrder(orderId)); 
+  };
 
-      setEditTotal((prev)=> {
-        const update = {...prev}
-        delete update[id]
-        return update
-      })
-      console.log("Edicion OK")
-      return new Swal({
-        title: "Success",
-        text: "Edicion exitosa",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 2000
-      });
-    } catch (error) {
-      console.log("Error to Update", error);
-    }
-  }
- const handleCancel = (id) => {
-  setEditTotal((prev)=> {
-    const update = {...prev}
-    delete update[id]
-    return update
-  })
- }
   return (
     <div>
-     <table className={styles.table}>
+      <table className={styles.table}>
         <thead>
           <tr>
-            <th>N° Orden</th>
             <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Acciones</th>
+            <th>Telefono</th>
+            <th>N° Orden</th>
+            <th>Precio</th>
+            <th>paymentMethod</th>
+            <th>Direccion</th>
+            <th>Pais</th>
+            <th>Accion</th>
           </tr>
         </thead>
+        <tbody>
+          {orders.map(order => (
+            <tr key={order.id}>
+              <td>{order.user.firstName}</td>
+              <td>{order.user.phone}</td>
+              <td>{order.id}</td>
+              <td>{order.total}</td>
+              <td>{order.paymentMethod.name}</td>
+              <td>{order.shippingAddress.address}</td>
+              <td>{order.shippingAddress.country}</td>
+              <td>
+                <>
+                <button onClick={() => handleDeleteOrder(order.id)}>Eliminar</button>
+                </>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

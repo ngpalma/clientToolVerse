@@ -49,7 +49,8 @@ import {
   GET_USER_ID,
   GET_USER_ID_ERROR,
   CREATE_CART_BDD,
-  SELECT_ADDRESS
+  ORDERS,
+  DELETE_ORDER
 } from "./type";
 
 export const getToolsByName = (tool) => {
@@ -416,6 +417,7 @@ export const getLastPuchasteCart = (userId) => {
   return async function () {
     try {
       const user = await axios.get(`/user/${userId}`)
+      console.log(user);
       const carts = user.data.purchaseCarts
 
       // Encontrar el objeto cart con el id más grande
@@ -505,17 +507,6 @@ export const getShippingAddressByUserId = (userId) => async (dispatch) => {
   }
 };
 
-export const selectAddress = (address) => {
-  try {
-    return {
-      type: SELECT_ADDRESS,
-      payload: address
-    }
-  } catch (error) {
-    console.log('Error al elegir la shipping address', error)
-  }
-}
-
 //Actions Reviews
 export const addReview = (review) => ({
   type: ADD_REVIEW,
@@ -579,7 +570,7 @@ export const getUserById = (id) => async (dispatch) => {
 
 export const updateUser = (id, userData) => async (dispatch) => {
   try {
-    const response = await axios.put(`/user/${id}`);
+    const response = await axios.put(`/user/${id}`, userData);
     dispatch({
       type: UPDATE_USER_SUCCESS,
       payload: response.data,
@@ -604,3 +595,33 @@ export const getAllUsers = () => {
     }
   };
 };
+export const getOrders = () => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`/purchaseOrder`);
+      if (response.data) {
+        const orders = response.data; // Actualiza esto según la estructura de tu respuesta
+        dispatch({
+          type: ORDERS,
+          payload: orders,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+export const deleteOrder = (orderId) => {
+  return async function (dispatch) {
+    try {
+      await axios.delete(`/purchaseOrder/${orderId}`);
+      dispatch({
+        type: DELETE_ORDER,
+        payload: orderId,
+      });
+      dispatch(getOrders()); // Actualiza la lista después de eliminar
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}

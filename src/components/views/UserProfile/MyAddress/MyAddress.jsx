@@ -4,6 +4,7 @@ import { validateForm } from "./Validation";
 import {
   createShippingAddress,
   getShippingAddressByUserId,
+  getUserById,
   updateShippingAddress,
 } from "../../../../redux/actions";
 import MyAddressForm from "./MyAddressForm";
@@ -45,6 +46,7 @@ const MyAddress = ({ user }) => {
     if (!validationError) {
       dispatch(createShippingAddress(formAddress))
         .then(() => {
+          dispatch(getUserById(user.id));
           console.log("Registro exitoso");
           setFormAddress({
             country: "",
@@ -82,6 +84,7 @@ const MyAddress = ({ user }) => {
     if (!validationError) {
       dispatch(updateShippingAddress(modifyAddress.id, modifyAddress))
         .then(() => {
+          dispatch(getUserById(user.id));
           console.log("Registro exitoso");
           setModifyAddress(null);
           setError("");
@@ -132,7 +135,7 @@ const MyAddress = ({ user }) => {
     } catch (error) {
       console.log("No se encontro dirección", error);
     }
-  }, [dispatch, user.id]);
+  }, [dispatch, user]);
 
   return (
     <div>
@@ -167,9 +170,7 @@ const MyAddress = ({ user }) => {
                   <h2>Ciudad: {address[selectedAddress].city}</h2>
                   <h2>Dirección: {address[selectedAddress].address}</h2>
                   <h2>Código Postal: {address[selectedAddress].postalCode}</h2>
-                  <button onClick={handleModify}>
-                    Modificar dirección
-                  </button>
+                  <button onClick={handleModify}>Modificar dirección</button>
                 </div>
               )}
               <button onClick={handleLoadAddress}>

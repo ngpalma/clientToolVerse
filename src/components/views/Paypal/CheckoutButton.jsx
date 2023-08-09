@@ -7,7 +7,6 @@ import swal from "sweetalert2";
 //TODO: Implementar las siguientes funcionalidades para ocupar PayPal:
 // Una vez que el usuario agregue sus productos, mostrar el botón de PayPal en CartDetails solo cuando esté logueado el usuario.✓
 // Vincular el monto total con el Sandbox. ✓
-// Una vez hecha la compra exitosa, hacer POST en la ruta paymentpp
 // Mostrar alertas visuales en el navegador
 // Una vez pagado exitosamente redirigir al panel del usuario ✓
 
@@ -21,6 +20,10 @@ export function CheckoutButton({ totalAmount, trolley }) {
     try {
       const order = await actions.order.capture();
       console.log("¡Pago realizado exitosamente!", order);
+
+      // Almacena la respuesta de PayPal en el almacenamiento local
+    localStorage.setItem('paypal_response', JSON.stringify(order));
+
       new swal({
         title: "Success",
         text: "¡Pago realizado exitosamente!",
@@ -28,32 +31,16 @@ export function CheckoutButton({ totalAmount, trolley }) {
         buttons: true,
       })
       .then(() => {
-        navigate("/userprofile")
+        navigate("/ppfeedback")
       })
 
-      /* handleCreateOrder(); */ 
     } catch (error) {
       console.log("Ups, hubo un error en tu  pago", error);
       alert("Ups, hubo un error en tu  pago", error);
     }
   };
 
-  /* const handleCreateOrder = () => {
-    axios
-      .post("http://localhost:3001/paymentpp", {
-        trolley: trolley,
-        totalAmount: totalAmount,
-      }
-      )
-      .then((res) => {
-        console.log("Tu orden ha sido creada:", res.data);
-        alert("¡Tu orden ha sido creada!", res.data);
-        navigate("/userprofile")
-      })
-      .catch((error) => {
-        console.log("Error al crear la orden:", error);
-      });
-  }; */
+  
 
   return (
     <PayPalScriptProvider options={{ "client-id": clientId }}>

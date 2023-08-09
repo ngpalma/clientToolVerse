@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserById } from "../../../redux/actions";
 
 const UserProfile = () => {
-  const { id, firstName, lastName } = useSelector((state) => state.login);
+  const { id } = useSelector((state) => state.login);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const user = useSelector((state) => state.user);
   const [active, setActive] = useState("MiPerfil");
@@ -46,7 +46,7 @@ const UserProfile = () => {
       <div className={style.secondaryContainer}>
         <div className={style.nameContainer}> 
           <h1>
-            Hola {firstName} {lastName}
+            Hola {user.firstName} {user.lastName}
           </h1>
           <br></br>
         </div>
