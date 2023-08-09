@@ -45,7 +45,7 @@ const EditProducts = () => {
 
     if(editedProduct) {
       const {name, model, brand, price, detail} = editedProduct;
-      await axios.put(`http://localhost:3001/products/${id}`, {
+      await axios.put(`/products/${id}`, {
       name,
       model,
       brand,
