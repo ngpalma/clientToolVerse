@@ -1,16 +1,21 @@
 import React from "react";
 import styles from "./About.module.css";
 import Footer from "../Footer";
+import arFlag from "./banderasTeam/ar.png";
+import auFlag from "./banderasTeam/au.png";
+import mxFlag from "./banderasTeam/mx.png";
+import peFlag from "./banderasTeam/pe.png";
 
 const About = () => {
   const teamMembers = [
     {
       name: "Jose Antonio Flores",
       position: "Full Stack Developer",
-      education: "Benemerita Universidad Autonoma de Puebla, graduado de la Academia Henry",
+      education: "Benemerita Universidad Autonoma de Puebla, Academia Henry",
       previousEmployment: "Ejecutivo de Banca Comercial en Citi-Banamex",
       image: "https://ca.slack-edge.com/TPRS7H4PN-U03HZEVB12R-29f3aebacb75-512",
-      linkedin: 'https://www.linkedin.com/in/antonio-flores-developer/'
+      linkedin: 'https://www.linkedin.com/in/antonio-flores-developer/',
+      flag: mxFlag
     },
     {
         name: "Nicolás Gerardo Palma",
@@ -19,6 +24,7 @@ const About = () => {
         previousEmployment: "Soporte técnico y vendedor autónomo",
         image: "https://ca.slack-edge.com/TPRS7H4PN-U03UA0HP41Z-5ef929594b0f-512",
         linkedin:"https://www.linkedin.com/in/nicolas-gerardo-palma/",
+        flag: arFlag
     },
     {
         name: "",
@@ -94,6 +100,13 @@ const About = () => {
           <div id={`child-${index}`} onClick={() => member.linkedin && window.open(member.linkedin, '_blank')} key={index} className={styles.teamMember}>
           
             <img className={styles.memberImage} src={member.image} alt={member.name} />
+            <img style={{
+                position: "relative",
+                left: "10rem",
+                width: "9rem",
+                height: "auto",
+                marginTop: "15px"
+              }} src={member.flag} alt={member.name} />
             <div className={styles.memberDetails}>
               <h4 className={styles.memberName}>{member.name}</h4>
               <p className={styles.memberPosition}>{member.position}</p>

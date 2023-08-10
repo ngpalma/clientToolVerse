@@ -21,10 +21,11 @@ function Home() {
         <div className={style.homeDiv}>
             <br></br>
             <Carousel showThumbs={false} autoPlay={true} interval={3000}>
-                <img src="https://belltec.com.co/modules/angarslider/views/img/images/79f2d78b09ec9efa0cb71b14a6136ed979781ce7_bannerofertasJULIO%202023%20BELLTEC.jpg" alt="img" />
-                <img src="https://belltec.com.co/modules/angarslider/views/img/images/1c2616dc4c86eccdcd219d50eeb50fb9f68ce4ae_bannerinalambricos%202022.jpg" alt="img" />
-                <img src="https://belltec.com.co/modules/angarslider/views/img/images/564b42ff1301a72d87cb01b6ad9ab40628597c14_748fe41843339635df928ce00affab834a8b249e_katcher.jpg" alt="img" />
-
+                <img src="https://belltec.com.co/modules/angarslider/views/img/images/8c410ce5b766ed4fbbeea29cdcaca25b7dcae915_ofertasAGOSTO.jpg" alt="img" />
+                <img src="https://tienda.ferrecsa.com.mx/image/cache/catalog/BannerBOS2-1360x425h.png" alt="img" />
+                <img src="https://tienda.ferrecsa.com.mx/image/cache/catalog/bannMAKITA1-1360x425h.png" alt="img" />
+                <img src="https://tienda.ferrecsa.com.mx/image/cache/catalog/bannDewlt-1360x425h.png" alt="img" />
+                <img src="https://tienda.ferrecsa.com.mx/image/cache/catalog/bannpaypal-1360x425h.png" alt="img" />
             </Carousel>
             <div className={style.filtOrd}>
                 <Filters />
