@@ -62,7 +62,6 @@ export default function UserLogin() {
            
             <>
               <button onClick={() => handleMenuItemClick("/login")}>Cliente</button>
-              <button onClick={() => handleMenuItemClick("/admin")}>Administrador</button>
             </>
           )}
         </div>

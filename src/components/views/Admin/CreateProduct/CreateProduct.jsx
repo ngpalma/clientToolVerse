@@ -101,7 +101,6 @@ const CreateProduct = () => {
       <div>
         <form onSubmit={handlerSubmit} className={styles.formContainer}>
           <hr />
-          <h1>Agrega los Datos del Producto</h1>
           <div>
             <label className={styles.formLabel} htmlFor="name">Nombre: </label>
             <input className={styles.formInput}

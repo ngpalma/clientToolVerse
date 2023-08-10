@@ -1,19 +1,35 @@
-/* myShopping.module.css */
-
 .purchaseItem {
-    border: 1px solid var(--buttons);
-    border-radius: 0.5rem;
-    padding: 10px;
-    margin: 10px;
-    display: inline-block;
-    width: calc(33.33% - 20px);
-    box-sizing: border-box;
-    justify-content: center;
+  border: 10px solid var(--highlights);
+  border-radius: 0.5rem;
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+  width: calc(100% - 20px); /* Cambiamos el ancho al 50% */
+  box-sizing: border-box;
+  justify-content: center;
+  font-size: medium;
+  background-color: var(--primary);
+}
+
+.title {
+  padding: 10px;
+  background-color: var(--buttons);
+  width: 100%; /* Asegura que ocupe todo el ancho del .profilecontainer */
+  box-sizing: border-box; /* Incluye el padding en el ancho total */
+  border: 3px solid var(--buttons);
+  border-radius: 0.5rem;
+  color: var(--primary);
+}
+
+/* Consulta de medios para hacerlo responsive */
+@media (max-width: 768px) {
+  .purchaseItem {
+    width: 100%; /* Cambiamos el ancho al 100% en pantallas pequeñas */
   }
-  
-  @media (max-width: 768px) {
-    .purchaseItem {
-      width: 100%;
-    }
-  }
-  
+}
+
+
+
+
+
+

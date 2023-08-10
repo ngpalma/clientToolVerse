@@ -64,7 +64,7 @@
   padding: 1rem;
   border: 2rem solid var(--secondary);
   border-radius: 0.4rem;
-  background-color: var(--primary);
+  background-color: var(--secondary);
 }
 
 .activeComponent {

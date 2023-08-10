@@ -18,15 +18,6 @@ export default function PurchaseCartDisplay() {
     const actualUser = useSelector((state) => state.actualUser);
     const selectedAddress = useSelector((state) => state.addressSelected);
 
-    // // obtengo los detalles del usuario -> 
-    // const login = useSelector((state) => state.login)
-
-    // // obtengo los detalles de la shippingAddress ->
-    // const shippingAddress = useSelector((state) => state.address)
-
-    // // obtengo los detalles del purchaseCart y sus detalles
-    // const purchaseCartId = useSelector((state) => state.cartBDD.purchaseCartId)
-
     const trolley = useSelector((state) => state.itemCart);
 
     // Verificamos si el usuario está autenticado, si no lo está, lo redirigimos a /login

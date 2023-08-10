@@ -23,7 +23,9 @@ const MyShopping = () => {
 
   return (
     <div>
+      <div className={styles.title}>
       <h1>Historial de Compras</h1>
+      </div>
       <div className={styles.purchaseContainer}>
         {purchaseHistory.length > 0 ? (
           purchaseHistory.map((purchase) => (

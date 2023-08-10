@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import * as actions from "../../../redux/actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export function validate({ firstName, lastName, phone, country, state, city, address, postalCode }) {
     let cartErrors = {};
@@ -123,11 +124,19 @@ export default function CartForm({ cartError, setCartError }) {
             // dispatch(actions.createShippingAddress(dirPostal));
             dispatch(actions.actualUser(user));
             setCartError(false)
-            alert('Información guardada con éxito')
+            Swal.fire({
+                icon: "success",
+                title: "Información guardada",
+                text: "La información ha sido guardada con éxito.",
+              });
         }
         else {
             setCartErrors(errors);
-            alert('Por favor verifica que toda la información sea correcta')
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Por favor verifica que toda la información sea correcta.",
+              });
         }
     }
 
@@ -174,10 +183,10 @@ export default function CartForm({ cartError, setCartError }) {
                     ) : (
                         <div>
                             <select
-                                name="address"
+                                name="address" className={style.inputGral}
                                 onChange={(e) => handleSelect(e.target.value)}
                             >
-                                <option value="" key="first" hidden>
+                                <option value="" key="first" hidden >
                                     Seleccione una dirección
                                 </option>
                                 {address.map((a, i) => (

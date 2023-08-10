@@ -8,194 +8,146 @@ import axios from "axios";
 const User = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.usersCreated);
-  const [editMode, setEditMode] = useState({}); // Estado local para controlar el modo de edición de cada usuario
-  const [editedUsers, setEditedUsers] = useState({}); // Estado local para almacenar los usuarios editados
+
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
-    dispatch(getAllUsers());
+    try {
+      dispatch(getAllUsers());
+    } catch (error) {
+      console.log("Error al obtener los usuarios:", error);
+    }
   }, [dispatch]);
 
-  const handleEditUser = (id, lastName, firstName, email, phone, role) => {
-    // Cambiar el estado para activar el modo de edición del usuario con el id dado
-    setEditMode((prev) => ({ ...prev, [id]: {
-      id, 
-      lastName,
-      firstName,
-      email,
-      phone,
-      role
-    } }));
-  };
-  const handleInputChange = (id, field, value) => {
-    // Almacena los cambios realizados en los usuarios editados
-    setEditedUsers((prev) => ({
+//!Quedan rastros para editar a firstName pero no afecta en nada para activar o desactivar al usuario
+  const handleEditUser = (id, firstName, active) => {
+    setEditData((prev) => ({
       ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
+      [id]: { firstName, active },
     }));
   };
 
   const handleSaveUser = async (id) => {
     try {
-      const editedUser = editMode[id];
-      console.log("Editing User ID:", id, editedUser);
+      const editedUser = editData[id];
+
       if (editedUser) {
-        const { lastName, firstName, email, phone, role } = editedUser;
-        console.log("Sending PUT request to update user:", id);
+        const { firstName, active } = editedUser;
         await axios.put(`/user/${id}`, {
-          lastName,
           firstName,
-          email,
-          phone,
-          role,
+          active,
         });
-        setEditedUsers((prev) => ({
-          ...prev,
-          [id]: false, // Limpia el estado local para este usuario editado
-        }));
-        //La unica linea que puse para que los inputs se actualizen simultaneamente :)
         await dispatch(getAllUsers());
-        console.log("User data after dispatch:", users);
 
-
-        setEditMode((prevEditData) => {
+        setEditData((prevEditData) => {
           const updatedEditData = { ...prevEditData };
           delete updatedEditData[id];
           return updatedEditData;
         });
+
+        new Swal({
+          title: "Success",
+          text: "Acción exitosa",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       }
-      return new Swal({
-        title: "Success",
-        text: "Edicion exitosa",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 2000,
-      });
     } catch (error) {
       console.log("Error updating", error);
+      new Swal({
+        title: "Error",
+        text: "Hubo un error al actualizar el usuario",
+        icon: "error",
+        showConfirmButton: true,
+      });
     }
   };
+
   const handleCancel = (id) => {
-    setEditMode((prevEditData) => {
+    setEditData((prevEditData) => {
       const updatedEditData = { ...prevEditData };
       delete updatedEditData[id];
       return updatedEditData;
     });
   };
+
   return (
     <div>
       <h2>Usuarios</h2>
-      {users.length === 0 ? (
-        <p>No se tienen usuarios registrados.</p>
-      ) : (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Email</th>
-              <th>Teléfono</th>
-              <th>Rol</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  {editMode[user.id] ? (
-                    <input
-                      type="text"
-                      value={editedUsers[user.id]?.firstName || user.firstName}
-                      onChange={(e) =>
-                        handleInputChange(user.id, "firstName", e.target.value)
-                      }
-                    />
-                  ) : (
-                    user.firstName
-                  )}
-                </td>
-                {/* Resto de las celdas */}
-                <td>
-                  {editMode[user.id] ? (
-                    <input
-                      type="text"
-                      value={editedUsers[user.id]?.lastName || user.lastName}
-                      onChange={(e) => {
-                        handleInputChange(user.id, "lastName", e.target.value);
-                      }}
-                    />
-                  ) : (
-                    user.lastName
-                  )}
-                </td>
-                {/* Resto de las celdas */}
-                <td>
-                  {editMode[user.id] ? (
-                    <input
-                      type="text"
-                      value={editedUsers[user.id]?.email || user.email}
-                      onChange={(e) => {
-                        handleInputChange(user.id, "email", e.target.value);
-                      }}
-                    />
-                  ) : (
-                    user.email
-                  )}
-                </td>
-                {/* Resto de las celdas */}
-                <td>
-                  {editMode[user.id] ? (
-                    <input
-                      type="text"
-                      value={editedUsers[user.id]?.phone || user.phone}
-                      onChange={(e) => {
-                        handleInputChange(user.id, "phone", e.target.value);
-                      }}
-                    />
-                  ) : (
-                    user.phone
-                  )}
-                </td>
-                {/* Resto de las celdas */}
-                <td>
-                  {editMode[user.id] ? (
-                    <input
-                      type="text"
-                      value={editedUsers[user.id]?.role || user.role}
-                      onChange={(e) => {
-                        handleInputChange(user.id, "role", e.target.value);
-                      }}
-                    />
-                  ) : (
-                    user.role
-                  )}
-                </td>
-                <td>
-                  {editMode[user.id] ? (
-                    <>
-                      <button onClick={() => handleSaveUser(user.id)}>
-                        Guardar
-                      </button>
-                      <button onClick={() => handleCancel(user.id)}>
-                        Cancelar
-                      </button>
-                    </>
-                  ) : (
-                    <button onClick={() => handleEditUser(user.id)}>
-                      Editar
+
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Rol</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
+              <td>{user.email}</td>
+              <td>{user.phone}</td>
+              <td>{user.role}</td>
+              <td>
+                {editData[user.id] ? (
+                  <input
+                    type="checkbox"
+                    checked={editData[user.id].active}
+                    onChange={() => {
+                      setEditData((prevEditData) => ({
+                        ...prevEditData,
+                        [user.id]: {
+                          ...prevEditData[user.id],
+                          active: !prevEditData[user.id].active,
+                        },
+                      }));
+                    }}
+                  />
+                ) : (
+                  user.active ? "Si" : "No"
+                )}
+              </td>
+              <td>
+                {editData[user.id] ? (
+                  <>
+                    <button onClick={() => handleSaveUser(user.id)}>
+                      Guardar
                     </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+                    <button onClick={() => handleCancel(user.id)}>
+                      Cancelar
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() =>
+                      handleEditUser(user.id, user.firstName, user.active)
+                    }
+                  >
+                    {user.active ? "Bloquear" : "Desbloquear"}
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 export default User;
+
+
+
+
+

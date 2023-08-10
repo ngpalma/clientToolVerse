@@ -1,3 +1,5 @@
+import styles from "./MyProfileForm.module.css"
+
 const MyProfileForm = ({ handleSubmit, handleChange, formProfile, error }) => {
   return (
     <div>
@@ -44,7 +46,7 @@ const MyProfileForm = ({ handleSubmit, handleChange, formProfile, error }) => {
             />
           </div>
         </div>
-        <div>
+        <div className={styles.button}>
           <input type="submit" value="Confirmar" />
         </div>
       </form>

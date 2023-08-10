@@ -7,7 +7,6 @@ import Pagination from "../../../Pagination/Pagination";
 import SearchBar from "../SearchBarAdmin/searchBar";
 import Filters from '../../../Filters/Filters';
 import swal from "sweetalert2";
-// import withReactContent from "sweetalert2-react-content"
 
 
 const EditProducts = () => {
@@ -88,10 +87,9 @@ const EditProducts = () => {
   const toolsShown = allProducts.slice(startIndex, endIndex);
 
   return (
-    <div>
-      <h1 className={styles.title}>EDITAR PRODUCTOS</h1>
-      <SearchBar/>
-      <Filters/>
+    <div >
+      <SearchBar />
+      <Filters />
       <div className={styles.button}>
                     <input type="submit" value="Restablecer filtros" onClick={() => {
                         dispatch(getTools());
@@ -101,7 +99,7 @@ const EditProducts = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>SKU</th>
+            <th>ID</th>
             <th>Producto</th>
             <th>Modelo</th>
             <th>Marca</th>

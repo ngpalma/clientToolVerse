@@ -1,3 +1,4 @@
+import styles from "./MyAddressForm.module.css"
 const MyAddressForm = ({
   handleSubmit,
   handleSubmitModify,
@@ -14,6 +15,7 @@ const MyAddressForm = ({
         onSubmit={modifyAddress !== null ? handleSubmitModify : handleSubmit}
       >
         <div>
+          <br></br>
           <div>
             <label htmlFor="country">Pais:</label>
             <input
@@ -92,9 +94,9 @@ const MyAddressForm = ({
           </div>
         </div>
 
-        <div>
+        <div className={styles.button}>
           <input type="submit" value="Confirmar" />
-          {modifyAddress && <button onClick={handleCancel}>Cancelar</button>}
+          {modifyAddress && <button className={styles.button2} onClick={handleCancel}>Cancelar</button>}
         </div>
       </form>
       {error && <div>{error}</div>}

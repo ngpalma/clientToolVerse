@@ -37,6 +37,7 @@ import {
   SELECT_ADDRESS,
   ORDERS,
   DELETE_ORDER,
+  INTERSECT,
   // YES_CART_ERROR,
   // NO_CART_ERROR
 } from "./type";
@@ -60,8 +61,17 @@ const initialState = {
   user: {},
   updateUserError: null,
   addressSelected: '',
-  orders: []
+  orders: [],
+  byCategory: [],
+  byBrand: [],
+
 };
+
+function intersection(arr1, arr2, arr3) {
+    var data = [arr1, arr2, arr3]
+  var result = data.reduce((a, b) => a.filter(c => b.includes(c)));
+  return result
+}
 
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -70,6 +80,8 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
         allTools: payload,
         toolsShown: payload,
+        byBrand: payload,
+        byCategory: payload,
       };
     case GET_TOOLS_BY_NAME:
       return {
@@ -207,16 +219,21 @@ const rootReducer = (state = initialState, { type, payload }) => {
       );
       return {
         ...state,
-        toolsShown: categoryFiltered,
+        byCategory: categoryFiltered,
       };
 
     case CHANGE_FILTER_BRAND:
       const brandFiltered = state.allTools.filter((e) => e.brand === payload);
       return {
         ...state,
-        toolsShown: brandFiltered,
+        byBrand: brandFiltered,
       };
-
+      case INTERSECT:
+        let interseccionado = intersection(state.allTools, state.byCategory, state.byBrand)
+        return {
+            ...state,
+            toolsShown: interseccionado
+        };
     case ORDER_BY_NAME:
       const productsName = [...state.toolsShown];
       const sortProductsName = productsName.sort((a, b) => {

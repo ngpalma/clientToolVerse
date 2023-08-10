@@ -29,6 +29,9 @@ const MyReviews = ({ user }) => {
         }
         return (
           <div className={style.divReview} key={review.id}>
+            <div className={style.title}>
+            <h1>Mis Reviews</h1>
+            </div>
             <div>
               <img
                 src={product.image}

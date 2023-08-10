@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOrder, getOrders } from "../../../../redux/actions";
 import styles from "./Order.module.css";
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const orders = useSelector(state => state.orders);
   console.log(orders);
