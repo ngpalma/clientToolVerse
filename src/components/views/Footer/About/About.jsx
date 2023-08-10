@@ -27,12 +27,12 @@ const About = () => {
         flag: arFlag
     },
     {
-        name: "",
-        position: "",
-        education: "",
-        previousEmployment: "",
-        image: "",
-        linkedinUrl:"",
+        name: "Sara Maria Pinzón",
+        position: "Full Stack Developer",
+        education: "EAN - Profesional en Lenguas Modernas; Academia Henry",
+        previousEmployment: "Tutor de Abeka Academy",
+        image: "https://ca.slack-edge.com/TPRS7H4PN-U04J87CDNUE-3600b0f3484a-192",
+        linkedinUrl:"https://www.linkedin.com/in/sara-pinzon-01548192/",
     },
     {
         name: "",
