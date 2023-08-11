@@ -28,6 +28,7 @@ import { setIsAuthenticated, getShippingAddressByUserId } from "./redux/actions"
 import {persistor} from './redux/store';
 import Order from "./components/views/Admin/Order/Order";
 import PpFeedback from "./components/PpFeedback/PpFeedback";
+import {gapi} from 'gapi-script';
 
 function App() {
 
@@ -39,6 +40,16 @@ function App() {
 
 
   const login = useSelector(state => state.login);
+
+  const clientID = '770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com'
+  useEffect(()=>{
+       const start = () => {
+        gapi.auth2.init({
+          clientId:clientID,
+        })
+       }
+       gapi.load('client:auth2', start)
+  }, [])
 
 
   useEffect(() => {

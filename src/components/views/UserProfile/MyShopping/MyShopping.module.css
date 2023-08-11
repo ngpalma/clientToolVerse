@@ -1,22 +1,22 @@
 .purchaseItem {
-  border: 10px solid var(--highlights);
+  border: 0.625rem solid var(--highlights); /* Equivalente a 10px en muchas configuraciones de navegador */
   border-radius: 0.5rem;
-  padding: 10px;
-  margin: 10px;
+  padding: 1rem;
+  margin: 1rem; /* Equivalente a 10px en muchas configuraciones de navegador */
   display: inline-block;
-  width: calc(100% - 20px); /* Cambiamos el ancho al 50% */
+  width: calc(100% - 2rem); /* Redujimos el margen total al 2rem */
   box-sizing: border-box;
   justify-content: center;
-  font-size: medium;
+  font-size: 1rem; /* Equivalente a 16px en muchas configuraciones de navegador */
   background-color: var(--primary);
 }
 
 .title {
-  padding: 10px;
+  padding: 1rem;
   background-color: var(--buttons);
-  width: 100%; /* Asegura que ocupe todo el ancho del .profilecontainer */
-  box-sizing: border-box; /* Incluye el padding en el ancho total */
-  border: 3px solid var(--buttons);
+  width: 100%;
+  box-sizing: border-box;
+  border: 0.1875rem solid var(--buttons); /* Equivalente a 3px en muchas configuraciones de navegador */
   border-radius: 0.5rem;
   color: var(--primary);
 }
@@ -25,9 +25,9 @@
 @media (max-width: 768px) {
   .purchaseItem {
     width: 100%; /* Cambiamos el ancho al 100% en pantallas pequeñas */
+    margin: 0.5rem; /* Redujimos el margen para pantallas pequeñas */
   }
 }
-
 
 
 

@@ -2,10 +2,11 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addReview } from '../../redux/actions';
 import ReviewForm from './ReviewForm';
+import Swal from 'sweetalert2';
 
 const ReviewPage = ({ productId }) => {
   const dispatch = useDispatch();
-  
+
   // Acceder a la info del usuario
   const user = useSelector((state) => state.user);
   const reviews = user?.reviews
@@ -27,6 +28,13 @@ const ReviewPage = ({ productId }) => {
 
   const handleSubmitReview = (newReview) => {
     dispatch(addReview({ ...newReview, userId, productId }));
+    // le aviso al usuario que la review fue exitosa
+    Swal.fire({
+      icon: "success",
+      title: "Información guardada",
+      text: "La información ha sido guardada con éxito.",
+    });
+    // debería chequear los datos 
   };
 
   // const handleUpdateComments = (id, comments) => {

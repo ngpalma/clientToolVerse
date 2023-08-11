@@ -5,6 +5,7 @@ import arFlag from "./banderasTeam/ar.png";
 import auFlag from "./banderasTeam/au.png";
 import mxFlag from "./banderasTeam/mx.png";
 import peFlag from "./banderasTeam/pe.png";
+import colFlag from "./banderasTeam/col.png"
 
 const About = () => {
   const teamMembers = [
@@ -18,13 +19,13 @@ const About = () => {
       flag: mxFlag
     },
     {
-        name: "Nicolás Gerardo Palma",
-        position: "Full Stack Developer",
-        education: "Colegio San Ramón Nonato; Academia Henry",
-        previousEmployment: "Soporte técnico y vendedor autónomo",
-        image: "https://ca.slack-edge.com/TPRS7H4PN-U03UA0HP41Z-5ef929594b0f-512",
-        linkedin:"https://www.linkedin.com/in/nicolas-gerardo-palma/",
-        flag: arFlag
+      name: "Nicolás Gerardo Palma",
+      position: "Full Stack Developer",
+      education: "Colegio San Ramón Nonato; Academia Henry",
+      previousEmployment: "Soporte técnico y vendedor autónomo",
+      image: "https://ca.slack-edge.com/TPRS7H4PN-U03UA0HP41Z-5ef929594b0f-512",
+      linkedin: "https://www.linkedin.com/in/nicolas-gerardo-palma/",
+      flag: arFlag
     },
     {
         name: "Sara Maria Pinzón",
@@ -33,48 +34,42 @@ const About = () => {
         previousEmployment: "Tutor de Abeka Academy",
         image: "https://ca.slack-edge.com/TPRS7H4PN-U04J87CDNUE-3600b0f3484a-192",
         linkedinUrl:"https://www.linkedin.com/in/sara-pinzon-01548192/",
+        flag: colFlag
     },
     {
-        name: "",
-        position: "",
-        education: "",
-        previousEmployment: "",
-        image: "",
-        linkedinUrl:"",
+name: "Cecilia Moroni",
+      position: "Full Stack Developer",
+      education: "Facultad de Ciencias Químicas, UCC; Academia Henry",
+      previousEmployment: "Bioquímicaw",
+      image: "https://ca.slack-edge.com/TPRS7H4PN-U04AVPPM86L-a19469d765bd-512",
+      linkedinUrl: "https://www.linkedin.com/in/cecilia-moroni/",
+      flag: auFlag
     },
     {
-        name: "",
-        position: "",
-        education: "",
-        previousEmployment: "",
-        image: "",
-        linkedinUrl:"",
+      name: "",
+      position: "",
+      education: "",
+      previousEmployment: "",
+      image: "",
+      linkedinUrl: "",
     },
     {
-        name: "",
-        position: "",
-        education: "",
-        previousEmployment: "",
-        image: "",
-        linkedinUrl:"",
+      name: "",
+      position: "",
+      education: "",
+      previousEmployment: "",
+      image: "",
+      linkedinUrl: "",
     },
     {
-        name: "",
-        position: "",
-        education: "",
-        previousEmployment: "",
-        image: "",
-        linkedinUrl:"",
+      name: "",
+      position: "",
+      education: "",
+      previousEmployment: "",
+      image: "",
+      linkedinUrl: "",
     },
-    {
-        name: "",
-        position: "",
-        education: "",
-        previousEmployment: "",
-        image: "",
-        linkedinUrl:"",
-    },
-    
+
   ];
 
   function sortTeamMembers(teamMembers) {
@@ -84,7 +79,7 @@ const About = () => {
       const nameB = b.name.toLowerCase();
       if (nameA < nameB) {
         return -1;
-      }if (nameA > nameB) {
+      } if (nameA > nameB) {
         return 1;
       }
       return 0;
@@ -98,27 +93,27 @@ const About = () => {
       <div className={styles.teamMembersContainer}>
         {sortTeamMembers(teamMembers).map((member, index) => (
           <div id={`child-${index}`} onClick={() => member.linkedin && window.open(member.linkedin, '_blank')} key={index} className={styles.teamMember}>
-          
+
             <img className={styles.memberImage} src={member.image} alt={member.name} />
             <img style={{
-                position: "relative",
-                left: "10rem",
-                width: "9rem",
-                height: "auto",
-                marginTop: "15px"
-              }} src={member.flag} alt={member.name} />
+              position: "relative",
+              left: "10rem",
+              width: "9rem",
+              height: "auto",
+              marginTop: "15px"
+            }} src={member.flag} alt={member.name} />
             <div className={styles.memberDetails}>
               <h4 className={styles.memberName}>{member.name}</h4>
               <p className={styles.memberPosition}>{member.position}</p>
               <p className={styles.memberEducation}>Escolaridad: {member.education}</p>
               <p className={styles.memberEmployment}>Trayectoria Reelevante: {member.previousEmployment}</p>
-              
+
             </div>
-          
+
           </div>
         ))}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

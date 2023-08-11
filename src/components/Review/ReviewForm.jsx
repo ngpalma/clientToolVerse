@@ -19,6 +19,7 @@ const ReviewForm = ({ onSubmitReview }) => {
   const handleSubmitReview = () => {
     if (score > 0) {
       onSubmitReview({ score, comments });
+      handleScoreChange(score)
     } else {
       alert("Por favor, seleccione un puntaje antes de enviar la reseña");
     }

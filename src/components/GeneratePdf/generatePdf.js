@@ -32,7 +32,7 @@ export default function generatePdf(user, shippingAddress, trolley, idPago, form
     doc.text(40, 180, "" + shippingAddress.city + ". " + shippingAddress.state + ". " + shippingAddress.country);
     doc.setFont("courier", "bold");
     doc.text(40, 220, "Total: $" + total)
-    doc.text(40, 240, "Número de orden Mercado Pago: " + orderId)
+    doc.text(40, 240, "Número de orden " + formaPago + ": " + orderId)
     doc.text(40, 260, "Nro pago: " + idPago)
 
     var data = []

@@ -22,7 +22,8 @@ export function validate({ firstName, lastName, phone, country, state, city, add
 export default function CartForm({ cartError, setCartError }) {
     const navigate = useNavigate()
     const dispatch = useDispatch();
-    const login = useSelector(state => state.login)
+    // const login = useSelector(state => state.login)
+    const userLogin = useSelector(state=>state.user)
     const address = useSelector(state => state.address)
     const [addAddress, setAddAddress] = useState(false); //para activar la form del address
 
@@ -36,11 +37,11 @@ export default function CartForm({ cartError, setCartError }) {
     }); // la address que va a enviarse al estado global para ser utilizada luego, don't forget id!!!!
 
     const [user, setUser] = useState({
-        id: login.id,
-        firstName: login.firstName,
-        lastName: login.lastName,
-        email: login.email,
-        phone: login.phone,
+        id: userLogin.id,
+        firstName: userLogin.firstName,
+        lastName: userLogin.lastName,
+        email: userLogin.email,
+        phone: userLogin.phone,
         country: '',
         state: '',
         city: '',
@@ -64,7 +65,7 @@ export default function CartForm({ cartError, setCartError }) {
     console.log('address antes de use', address)
 
     useEffect(() => {
-        if (login.id && address && address.length > 0) {
+        if (userLogin.id && address && address.length > 0) {
             setUser(prevUser => ({
                 ...prevUser,
                 country: address[0].country || "",
@@ -74,7 +75,7 @@ export default function CartForm({ cartError, setCartError }) {
                 postalCode: address[0].postalCode || "",
             }));
         }
-    }, [login.id, address]);
+    }, [userLogin.id, address]);
 
     const handleLoadAddress = () => {
         navigate('/userprofile')

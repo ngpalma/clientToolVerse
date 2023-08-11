@@ -10,6 +10,7 @@ import { getUserById } from "../../../redux/actions";
 
 const UserProfile = () => {
   const { id } = useSelector((state) => state.login);
+  console.log(id);
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const user = useSelector((state) => state.user);
   const [active, setActive] = useState("MiPerfil");
@@ -24,7 +25,7 @@ const UserProfile = () => {
 
     const fetchUserData = async () => {
       try {
-        await dispatch(getUserById(id));
+        await dispatch(getUserById(user.id));
       } catch (error) {
         console.log("No se puede obtener el usuario", error);
       }

@@ -1,29 +1,36 @@
+
+
 .divReview {
-    display: flex;
-    gap: 2rem;
-    justify-content: space-around;
-    align-items: center;
-    border: 0.1rem solid var(--highlights);
-    padding: 1rem;
-    margin-bottom: 2rem;
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center;
+  border: 0.5rem solid var(--highlights);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 2rem;
+  background-color: var(--primary);
 }
 
 .nameProd {
-    font-size: larger;
-    font-weight: 700;
+  font-size: 1.25rem; /* Equivalente a 20px en muchas configuraciones de navegador */
+  font-weight: 700;
+  margin: auto; /* Centrar verticalmente */
 }
 
 .imgProd {
-    height: 8rem;
-    margin-left: -9rem;
+  height: 8rem;
+  width: auto;
+  margin: auto; /* Centrar vertical y horizontalmente */
 }
 
 .title {
-    padding: 10px;
-    background-color: var(--buttons);
-    width: 100%; /* Asegura que ocupe todo el ancho del .profilecontainer */
-    box-sizing: border-box; /* Incluye el padding en el ancho total */
-    border: 3px solid var(--buttons);
-    border-radius: 0.5rem;
-    color: var(--primary);
-  }
+  text-align: center; /* Centrar contenido del título */
+  margin-left: 0.1875rem; /* Equivalente a 3px en muchas configuraciones de navegador */
+  padding: 1rem;
+  background-color: var(--buttons);
+  width: 100%;
+  box-sizing: border-box;
+  border: 0.1875rem solid var(--buttons); /* Equivalente a 3px en muchas configuraciones de navegador */
+  border-radius: 0.5rem;
+  color: var(--primary);
+}

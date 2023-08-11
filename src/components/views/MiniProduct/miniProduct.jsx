@@ -5,6 +5,7 @@ import menos from '../img/menos.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from "react";
 import * as actions from "../../../redux/actions";
+import Swal from 'sweetalert2';
 
 
 
@@ -19,13 +20,21 @@ const MiniProduct = ({ id, image, name, model, brand, price, quantity, feature }
 
     // Borra el Producto por completo
     const handleDelete = (id) => {
-        let answer = window.confirm("Seguro que quieres eliminar este producto del carrito?");
-        if (answer) {
-            dispatch(actions.removeFromCart(id));
-        }
-        else {
-            return
-        }
+        Swal.fire({
+            title: "Eliminar producto",
+            text: "Seguro que quieres eliminar este producto del carrito?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              dispatch(actions.removeFromCart(id));
+              Swal.fire("Eliminado", "El producto ha sido eliminado del carrito.", "success");
+            }
+          });
     };
 
     // Quantity del Producto - 1 -> Stock + 1

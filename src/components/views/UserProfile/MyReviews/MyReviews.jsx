@@ -1,18 +1,23 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import style from "./MyReviews.module.css";
+import { getUserById } from "../../../../redux/actions";
 
 const MyReviews = ({ user }) => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const products = useSelector((state) => state.allTools);
   const userReviews = user.reviews;
+  console.log(user);
+  console.log(userReviews);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getUserById(user.id));
     if (!isAuthenticated) {
       // Si no está autenticado, redirige a la página de inicio de sesión
       navigate("/login");
@@ -22,6 +27,9 @@ const MyReviews = ({ user }) => {
 
   return (
     <div>
+      <div className={style.title}>
+        <h1>Mis Reviews</h1>
+      </div>
       {userReviews.map((review) => {
         const product = products.find((p) => p.id === review.productId);
         if (!product) {
@@ -29,9 +37,6 @@ const MyReviews = ({ user }) => {
         }
         return (
           <div className={style.divReview} key={review.id}>
-            <div className={style.title}>
-            <h1>Mis Reviews</h1>
-            </div>
             <div>
               <img
                 src={product.image}
