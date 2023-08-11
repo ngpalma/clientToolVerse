@@ -51,6 +51,7 @@ const Filters = () => {
           <option value="SURTEK">Surtek</option>
           <option value="PETRUL">Petrul</option>
           <option value="SENCO">Senco</option>
+          <option value="SENCO">Senco</option>
           <option value="INGERSOLL">Ingersoll</option>
           <option value="BLACK & DECKER">Black & Decker</option>
         </select>
