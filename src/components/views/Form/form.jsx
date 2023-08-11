@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { createUser } from "../../../redux/actions";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from '@react-oauth/google';
 import { validateForm } from "./validation";
 
 function Form() {
