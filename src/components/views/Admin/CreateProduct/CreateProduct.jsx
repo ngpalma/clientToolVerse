@@ -193,7 +193,7 @@ const CreateProduct = () => {
           <input className={styles.formInput} type="text" id="image" name="image" onChange={handlerProduct} value={product.image} hidden />
           
           <CloudinaryUploadWidget imageUrl={setProduct} inputs={product}/>
-          <img id="uploadedimage" src="" ref={imageRef}></img>
+          <img id="uploadedimage" src="" ref={imageRef} alt="img"></img>
         </div> 
           
           <div>
