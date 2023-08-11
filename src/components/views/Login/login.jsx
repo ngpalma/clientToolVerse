@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./login.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { login, resGoogle } from "../../../redux/actions";
+import { login } from "../../../redux/actions";
 import { useNavigate } from "react-router-dom";
 // import { GoogleLogin } from "react-google-login";
-import { GoogleLogin } from '@react-oauth/google';
-
+import { GoogleLogin } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function Login() {
   const [inputs, setInputs] = useState({
@@ -39,14 +39,14 @@ function Login() {
     setInputs((prevInputs) => ({
       ...prevInputs,
       email,
-      password: "logingoogle", 
+      password: "logingoogle",
     }));
     setIsLoginFormSubmitted(true);
     console.log("response en onSuccess", response);
   };
 
   const responseGoogle = (response) => {
-     console.log("Google response:", response);
+    console.log("Google response:", response);
   };
 
   useEffect(() => {
@@ -96,13 +96,15 @@ function Login() {
         {errorLogin && <div className={styles.error}>{errorLogin}</div>}
 
         <div className={styles["google-button"]}>
-          <GoogleLogin
-            clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com"
-            buttonText="Inicia sesión con Google"
-            onSuccess={onSuccess}
-            onFailure={responseGoogle}
-            cookiePolicy={"single_host_origin"}
-          />
+          <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
+            <GoogleLogin
+              buttonText="Inicia sesión con Google"
+              onSuccess={onSuccess}
+              onFailure={responseGoogle}
+              cookiePolicy={"single_host_origin"}
+            />
+          </GoogleOAuthProvider>
+          ;
         </div>
       </div>
     </div>
