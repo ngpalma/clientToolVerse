@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { validateForm } from "./validation";
-import jwt_decode from "jwt-decode";
 
 function Form() {
   const dispatch = useDispatch();
@@ -193,18 +192,8 @@ function Form() {
         <div className={styles["google-button"]}>
           <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
             <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                var decoded = jwt_decode(credentialResponse.credential);
-
-                console.log(decoded);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-              // buttonText="Regístrate con Google"
-              // onSuccess={responseGoogleSuccess}
-              // onFailure={responseGoogleFailure}
-              // cookiePolicy={"single_host_origin"}
+              onSuccess={responseGoogleSuccess}
+              onError={responseGoogleFailure}
             />
           </GoogleOAuthProvider>
           ;
