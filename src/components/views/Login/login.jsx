@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../redux/actions";
 import { useNavigate } from "react-router-dom";
 // import { GoogleLogin } from "react-google-login";
-import { GoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
+
 
 function Login() {
   const [inputs, setInputs] = useState({
@@ -97,12 +98,14 @@ function Login() {
 
         <div className={styles["google-button"]}>
           <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
-            <GoogleLogin
-              onSuccess={credentialResponse => {
-                console.log(credentialResponse);
+          <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                var decoded = jwt_decode(credentialResponse.credential);
+
+                console.log(decoded);
               }}
               onError={() => {
-                console.log('Login Failed');
+                console.log("Login Failed");
               }}
               // buttonText="Inicia sesión con Google"
               // onSuccess={onSuccess}
