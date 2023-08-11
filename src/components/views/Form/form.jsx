@@ -190,7 +190,7 @@ function Form() {
         </form>
 
         <div className={styles["google-button"]}>
-          <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="125350630479-iq7tadqmu4uqgt7fs30jq9e7e3arpooh.apps.googleusercontent.com">
             <GoogleLogin
               buttonText="Regístrate con Google"
               onSuccess={responseGoogleSuccess}

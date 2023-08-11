@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../redux/actions";
 import { useNavigate } from "react-router-dom";
 // import { GoogleLogin } from "react-google-login";
-import { GoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 function Login() {
   const [inputs, setInputs] = useState({
@@ -96,7 +95,7 @@ function Login() {
         {errorLogin && <div className={styles.error}>{errorLogin}</div>}
 
         <div className={styles["google-button"]}>
-          <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="125350630479-iq7tadqmu4uqgt7fs30jq9e7e3arpooh.apps.googleusercontent.com">
             <GoogleLogin
               buttonText="Inicia sesión con Google"
               onSuccess={onSuccess}
