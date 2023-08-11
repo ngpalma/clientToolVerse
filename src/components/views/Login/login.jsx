@@ -3,7 +3,9 @@ import styles from "./login.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login, resGoogle } from "../../../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+// import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from '@react-oauth/google';
+
 
 function Login() {
   const [inputs, setInputs] = useState({
