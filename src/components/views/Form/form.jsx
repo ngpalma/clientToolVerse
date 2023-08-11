@@ -72,11 +72,11 @@ function Form() {
   };
 
   const responseGoogleSuccess = (response) => {
-    const { givenEmail, givenName, familyName } = response.profileObj;
+    const { email, givenName, familyName } = response.profileObj;
     // Llena automáticamente el email, nombre y apellido obtenidos de Google en el formulario
     setFormData({
       ...formData,
-      email: givenEmail,
+      email,
       firstName: givenName,
       lastName: familyName,
     });
@@ -190,12 +190,18 @@ function Form() {
         </form>
 
         <div className={styles["google-button"]}>
-          <GoogleOAuthProvider clientId="125350630479-iq7tadqmu4uqgt7fs30jq9e7e3arpooh.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
             <GoogleLogin
-              buttonText="Regístrate con Google"
-              onSuccess={responseGoogleSuccess}
-              onFailure={responseGoogleFailure}
-              cookiePolicy={"single_host_origin"}
+              onSuccess={credentialResponse => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+              // buttonText="Regístrate con Google"
+              // onSuccess={responseGoogleSuccess}
+              // onFailure={responseGoogleFailure}
+              // cookiePolicy={"single_host_origin"}
             />
           </GoogleOAuthProvider>
           ;
