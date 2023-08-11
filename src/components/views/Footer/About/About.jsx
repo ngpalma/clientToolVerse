@@ -46,30 +46,23 @@ name: "Cecilia Moroni",
       flag: auFlag
     },
     {
-      name: "",
-      position: "",
-      education: "",
-      previousEmployment: "",
-      image: "",
-      linkedinUrl: "",
+      name: "Daniel Alejandro Quintero Carrillo",
+      position: "Full Stack Developer",
+      education: "Ingeniero Industrial, Academia Henry",
+      previousEmployment: "Gerente de Operaciones, Tolder S.A",
+      image: "https://ca.slack-edge.com/TPRS7H4PN-U042BPPD04D-c232b318a492-512",
+      linkedinUrl: "https://www.linkedin.com/in/daniel-quintero-8127b5a3/",
+      flag: arFlag
     },
     {
-      name: "",
-      position: "",
-      education: "",
-      previousEmployment: "",
-      image: "",
-      linkedinUrl: "",
+      name: "Juan Zubiri",
+      position: "Full Stack Developer",
+      education: "educativas: EEMPI 8098, Instituto superior santo Domingo, Academia Henry.",
+      previousEmployment: "Gestión de la producción en IMG Textil SRL",
+      image: "https://ca.slack-edge.com/TPRS7H4PN-U04J3N98T2M-d3527c16c481-192",
+      linkedinUrl: "https://www.linkedin.com/in/juan-zubiri/?originalSubdomain=ar",
+      flag: arFlag
     },
-    {
-      name: "",
-      position: "",
-      education: "",
-      previousEmployment: "",
-      image: "",
-      linkedinUrl: "",
-    },
-
   ];
 
   function sortTeamMembers(teamMembers) {

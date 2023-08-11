@@ -1,9 +1,11 @@
 .navBar {
-    background-color: var(--primary);
+    background-color: var(--secondary);
     display: flex;
     justify-content: space-around;
     align-items: center;
     height: 9.7rem;
+    width: 100%;
+    padding: 1rem;
 }
 
 .toHome,
@@ -28,6 +30,8 @@
 
 .logOn,
 .register {
+    background-color: var(--buttons);
+    color: var(--primary);
     border: 0.1rem solid var(--secondary);
     border-radius: 1rem;
     height: 4rem;
@@ -49,6 +53,10 @@
 
 .registerLogOn {
     margin-left: 2rem;
+}
+
+.searchBar {
+    background-color: var(--primary);
 }
 
 @media (min-width: 816px) {
@@ -120,6 +128,7 @@
 
     .searchBar {
         margin-right: 2rem;
+        background-color: var(--primary);
     }
 
     .registerLogOn {

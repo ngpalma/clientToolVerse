@@ -25,7 +25,7 @@ const UserProfile = () => {
 
     const fetchUserData = async () => {
       try {
-        await dispatch(getUserById(user.id));
+        await dispatch(getUserById(id));
       } catch (error) {
         console.log("No se puede obtener el usuario", error);
       }

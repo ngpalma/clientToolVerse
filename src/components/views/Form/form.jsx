@@ -4,8 +4,9 @@ import { useDispatch } from "react-redux";
 import { createUser } from "../../../redux/actions";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { validateForm } from "./validation";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 
 function Form() {
   const dispatch = useDispatch();
@@ -71,14 +72,14 @@ function Form() {
     }
   };
 
-  const responseGoogleSuccess = (response) => {
-    const { email, givenName, familyName } = response.profileObj;
+  const responseGoogleSuccess = (credentialResponse) => {
+    var decoded = jwt_decode(credentialResponse.credential);
     // Llena automáticamente el email, nombre y apellido obtenidos de Google en el formulario
     setFormData({
       ...formData,
-      email,
-      firstName: givenName,
-      lastName: familyName,
+      email: decoded.email,
+      firstName: decoded.given_name,
+      lastName: decoded.family_name,
     });
   };
 
@@ -190,10 +191,12 @@ function Form() {
         </form>
 
         <div className={styles["google-button"]}>
-          <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="125350630479-iq7tadqmu4uqgt7fs30jq9e7e3arpooh.apps.googleusercontent.com">
             <GoogleLogin
               onSuccess={responseGoogleSuccess}
-              onError={responseGoogleFailure}
+              onError={() => {
+                console.log("Login Failed");
+              }}
             />
           </GoogleOAuthProvider>
           ;

@@ -3,9 +3,8 @@ import styles from "./login.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login, resGoogle } from "../../../redux/actions";
 import { useNavigate } from "react-router-dom";
-// import { GoogleLogin } from "react-google-login";
-import { GoogleLogin } from "@react-oauth/google";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 
 function Login() {
   const [inputs, setInputs] = useState({
@@ -34,15 +33,16 @@ function Login() {
     setIsLoginFormSubmitted(true);
   };
 
-  const onSuccess = (response) => {
-    const { email } = response.profileObj;
+  const onSuccess = (credentialResponse) => {
+    var decoded = jwt_decode(credentialResponse.credential);
+
     setInputs((prevInputs) => ({
       ...prevInputs,
-      email,
+      email: decoded.email,
       password: "logingoogle",
     }));
     setIsLoginFormSubmitted(true);
-    console.log("response en onSuccess", response);
+    console.log("response en onSuccess", decoded);
   };
 
   const responseGoogle = (response) => {
@@ -96,11 +96,13 @@ function Login() {
         {errorLogin && <div className={styles.error}>{errorLogin}</div>}
 
         <div className={styles["google-button"]}>
-          <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
-            <GoogleLogin onSuccess={credentialResponse=>{
-              
-              console.log(credentialResponse.credential);
-            }} onFailure={responseGoogle} />
+          <GoogleOAuthProvider clientId="125350630479-iq7tadqmu4uqgt7fs30jq9e7e3arpooh.apps.googleusercontent.com">
+            <GoogleLogin
+              onSuccess={onSuccess}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
           </GoogleOAuthProvider>
           ;
         </div>
