@@ -97,7 +97,10 @@ function Login() {
 
         <div className={styles["google-button"]}>
           <GoogleOAuthProvider clientId="770412625356-vul6o4cnqq4bj7j3klkh3qf69bbom7lv.apps.googleusercontent.com">
-            <GoogleLogin onSuccess={onSuccess} onFailure={responseGoogle} />
+            <GoogleLogin onSuccess={credentialResponse=>{
+              
+              console.log(credentialResponse.credential);
+            }} onFailure={responseGoogle} />
           </GoogleOAuthProvider>
           ;
         </div>
