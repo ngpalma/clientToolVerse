@@ -35,10 +35,10 @@ function Login() {
   };
 
   const onSuccess = (response) => {
-    const { email } = response.profileObj;
+    const { givenEmail } = response.profileObj;
     setInputs((prevInputs) => ({
       ...prevInputs,
-      email,
+      email: givenEmail,
       password: "logingoogle",
     }));
     setIsLoginFormSubmitted(true);

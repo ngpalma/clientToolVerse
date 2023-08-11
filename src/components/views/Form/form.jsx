@@ -72,11 +72,11 @@ function Form() {
   };
 
   const responseGoogleSuccess = (response) => {
-    const { email, givenName, familyName } = response.profileObj;
+    const { givenEmail, givenName, familyName } = response.profileObj;
     // Llena automáticamente el email, nombre y apellido obtenidos de Google en el formulario
     setFormData({
       ...formData,
-      email,
+      email: givenEmail,
       firstName: givenName,
       lastName: familyName,
     });
