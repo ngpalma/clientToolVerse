@@ -25,9 +25,8 @@ const Detail = () => {
     }
   }, [dispatch, id]);
 
-  const findReview = reviews.length && reviews.find(
-    (review) => review.productId === parseInt(id)
-  );
+  const findReview = reviews ? reviews.find(
+    (review) => review.productId === parseInt(id)) : null;
 
 
   useEffect(() => {
